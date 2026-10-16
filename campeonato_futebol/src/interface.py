@@ -62,31 +62,29 @@ DADOS_INICIAIS = {
     }
 }
 
-def inicializar_campeonato():
-    g = GestorCampeonato()
-    g.series = {}
-    for nome_s, info in DADOS_INICIAIS.items():
-        s = Serie(nome_s)
-        for num, eq in info["equipas"].items():
-            s.adicionar_equipa(num, eq)
-        for c, f, gc, gf in info["jogos_j1"]:
-            j = s.adicionar_jogo(jornada=1, equipa_casa=c, equipa_fora=f)
-            j.definir_resultado(gc, gf)
-        g.series[nome_s] = s
-    gestor_dados.guardar_dados(g)
+def carregar_ou_inicializar():
+    g = None
+    try:
+        g = gestor_dados.carregar_dados()
+    except Exception:
+        g = None
+    
+    if g is None or not getattr(g, "series", {}):
+        g = GestorCampeonato()
+        g.series = {}
+        for nome_s, info in DADOS_INICIAIS.items():
+            s = Serie(nome_s)
+            for num, eq in info["equipas"].items():
+                s.adicionar_equipa(num, eq)
+            for c, f, gc, gf in info["jogos_j1"]:
+                j = s.adicionar_jogo(jornada=1, equipa_casa=c, equipa_fora=f)
+                j.definir_resultado(gc, gf)
+            g.series[nome_s] = s
+        gestor_dados.guardar_dados(g)
     return g
 
-# Tenta carregar do ficheiro JSON; se não tiver as 4 séries, força a criação inicial
-g_existente = None
-try:
-    g_existente = gestor_dados.carregar_dados()
-except Exception:
-    g_existente = None
-
-if g_existente is None or not getattr(g_existente, "series", {}) or len(g_existente.series) < 4:
-    st.session_state["campeonato"] = inicializar_campeonato()
-else:
-    st.session_state["campeonato"] = g_existente
+if "campeonato" not in st.session_state or st.session_state["campeonato"] is None:
+    st.session_state["campeonato"] = carregar_ou_inicializar()
 
 gestor = st.session_state["campeonato"]
 
