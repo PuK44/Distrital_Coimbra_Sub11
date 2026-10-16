@@ -70,13 +70,14 @@ def inicializar_campeonato():
         for num, eq in info["equipas"].items():
             s.adicionar_equipa(num, eq)
         for c, f, gc, gf in info["jogos_j1"]:
-            j = s.adicionar_jogo(jornada=1, equipa_casa=c, equipa_fora=f)
+            # Chamada por ordem posicional (jornada, equipa_casa, equipa_fora)
+            j = s.adicionar_jogo(1, c, f)
             j.definir_resultado(gc, gf)
         g.series[nome_s] = s
     gestor_dados.guardar_dados(g)
     return g
 
-# Tenta carregar do ficheiro JSON; se não tiver as 4 séries, força a criação inicial
+# Tenta carregar do JSON; se não tiver as 4 séries, força a criação inicial
 g_existente = None
 try:
     g_existente = gestor_dados.carregar_dados()
