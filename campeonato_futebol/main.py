@@ -1,19 +1,12 @@
-import os
 import sys
+import os
 
-def iniciar_aplicacao():
-    caminho_interface = os.path.join("src", "interface.py")
-    
-    if not os.path.exists(caminho_interface):
-        print(f"Erro: O ficheiro '{caminho_interface}' não foi encontrado!")
-        sys.exit(1)
+# 1. Adicionar o caminho raiz para garantir que encontra o pacote 'src'
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-    print("A iniciar a aplicação no navegador...")
-    # Define a diretoria raiz no PYTHONPATH antes de lançar o Streamlit
-    env = os.environ.copy()
-    env["PYTHONPATH"] = os.path.abspath(".")
-    
-    os.system(f"streamlit run {caminho_interface}")
+# 2. Executar diretamente o ficheiro de interface gráfica
+caminho_interface = os.path.join(os.path.dirname(__file__), "src", "interface.py")
 
-if __name__ == "__main__":
-    iniciar_aplicacao()
+with open(caminho_interface, encoding="utf-8") as f:
+    code = compile(f.read(), caminho_interface, 'exec')
+    exec(code, globals())
