@@ -178,7 +178,7 @@ st.title("⚽ Troféu Distrital Coimbra - Sub11")
 # Sidebar - Painel de Acesso Admin
 st.sidebar.header("⚙️ Definições & Acesso")
 senha_admin = st.sidebar.text_input("Palavra-passe Admin", type="password")
-e_admin = (senha_admin == "admin123")
+e_admin = (senha_admin == "lsasub11")
 
 if e_admin:
     st.sidebar.success("Modo Admin Ativo")
