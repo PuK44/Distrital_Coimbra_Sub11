@@ -15,8 +15,8 @@ st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 # Inicialização do gestor de dados
 gestor_dados = GestorDados()
 
-# Plantel do CD Lousanense Sub11
-PLANTEL_LOUSANENSE = [
+# Plantel Base do CD Lousanense Sub11
+PLANTEL_LOUSANENSE_BASE = [
     {"nome": "Vitória Madeira", "posicao": "GR"},
     {"nome": "Vasco Santos", "posicao": "GR"},
     {"nome": "Valentim", "posicao": "GR"},
@@ -170,6 +170,8 @@ if "campeonato" not in st.session_state or precisa_reinstalar(st.session_state.g
 campeonato = st.session_state["campeonato"]
 if not hasattr(campeonato, "fichas_lousanense"):
     campeonato.fichas_lousanense = {}
+if not hasattr(campeonato, "jogadores_extra_lousanense"):
+    campeonato.jogadores_extra_lousanense = []
 
 st.title("⚽ Troféu Distrital Coimbra - Sub11")
 
@@ -367,6 +369,57 @@ with tab_fase1:
 with tab_lousanense:
     st.header("🔴⚪ CD Lousanense - Estatísticas de Jogadores & Resultados Reais")
 
+    # Unifica o Plantel Base com os Jogadores Extra adicionados
+    plantel_completo = PLANTEL_LOUSANENSE_BASE + getattr(campeonato, "jogadores_extra_lousanense", [])
+
+    # PAINEL ADMIN: GESTÃO DO PLANTEL EXTRA
+    if e_admin:
+        with st.expander("👥 ÁREA ADMIN: Adicionar / Remover Jogadores Extra ao Plantel", expanded=False):
+            col_ex1, col_ex2 = st.columns([1, 1])
+            
+            with col_ex1:
+                st.write("**➕ Adicionar Jogador do Escalão Inferior:**")
+                nome_novo_atleta = st.text_input("Nome do Jogador", key="input_nome_extra")
+                pos_novo_atleta = st.selectbox(
+                    "Posição / Escalão",
+                    ["GR", "Defesa", "Médio", "Ala", "Avançado", "Sub10 / Extra"],
+                    index=5,
+                    key="input_pos_extra"
+                )
+                if st.button("Adicionar ao Plantel", key="btn_add_extra"):
+                    nome_clean = nome_novo_atleta.strip()
+                    if nome_clean:
+                        nomes_existentes = [p["nome"] for p in plantel_completo]
+                        if nome_clean not in nomes_existentes:
+                            campeonato.jogadores_extra_lousanense.append({
+                                "nome": nome_clean,
+                                "posicao": pos_novo_atleta
+                            })
+                            gestor_dados.guardar_dados(campeonato)
+                            st.success(f"Jogador '{nome_clean}' adicionado ao plantel!")
+                            st.rerun()
+                        else:
+                            st.warning("Já existe um jogador registado com esse nome.")
+                    else:
+                        st.error("Por favor, introduz um nome válido.")
+
+            with col_ex2:
+                st.write("**🗑️ Eliminar / Corrigir Jogador Extra:**")
+                extras_atuais = getattr(campeonato, "jogadores_extra_lousanense", [])
+                if not extras_atuais:
+                    st.info("Nenhum jogador extra adicionado até ao momento.")
+                else:
+                    nomes_extras = [p["nome"] for p in extras_atuais]
+                    atleta_remover = st.selectbox("Escolher Atleta a Remover", nomes_extras, key="select_del_extra")
+                    
+                    if st.button("Eliminar Jogador Extra", key="btn_del_extra"):
+                        campeonato.jogadores_extra_lousanense = [
+                            p for p in campeonato.jogadores_extra_lousanense if p["nome"] != atleta_remover
+                        ]
+                        gestor_dados.guardar_dados(campeonato)
+                        st.success(f"Jogador '{atleta_remover}' removido do plantel!")
+                        st.rerun()
+
     # Obter os jogos do Cd Lousanense na Série A (Lousanense é ID 1)
     serie_a = campeonato.series.get("SÉRIE A")
     jogos_lousanense = []
@@ -385,8 +438,8 @@ with tab_lousanense:
     with col_stats:
         st.subheader("📊 Tabela de Jogadores")
 
-        # Inicializa a contagem dos atletas
-        stats_jogadores = {p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0} for p in PLANTEL_LOUSANENSE}
+        # Inicializa a contagem dos atletas (incluindo os extra)
+        stats_jogadores = {p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0} for p in plantel_completo}
 
         # Agrega presenças, golos e assistências de todas as fichas guardadas
         for j_str, ficha in campeonato.fichas_lousanense.items():
@@ -429,7 +482,7 @@ with tab_lousanense:
             df_jogadores,
             use_container_width=True,
             hide_index=True,
-            height=620,  # Altura aumentada para mostrar todos os 16 jogadores sem scroll
+            height=620,
             column_config={
                 "Jogador": st.column_config.TextColumn("Jogador", width="medium"),
                 "Posição": st.column_config.TextColumn("Pos.", width="small"),
@@ -483,7 +536,7 @@ with tab_lousanense:
                     )
 
                 st.write("**Jogadores Utilizados neste Jogo:**")
-                nomes_jogadores_lista = [p["nome"] for p in PLANTEL_LOUSANENSE]
+                nomes_jogadores_lista = [p["nome"] for p in plantel_completo]
                 convocados_antigos = ficha_atual.get("convocados", [])
                 
                 jogadores_utilizados = st.multiselect(
