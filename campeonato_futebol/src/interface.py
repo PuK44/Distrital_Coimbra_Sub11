@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import streamlit as st
 import pandas as pd
-from src.modelos import GestorCampeonato, Serie, Jogo
+from src.modelos import GestorCampeonato, Serie
 from src.gestor_dados import GestorDados
 
 # Configuração da página
@@ -71,11 +71,13 @@ def inicializar_campeonato():
             s.adicionar_equipa(num, eq)
         
         for c, f, gc, gf in info["jogos_j1"]:
-            novo_jogo = Jogo(jornada=1, equipa_casa=c, equipa_fora=f)
-            novo_jogo.golo_casa = gc
-            novo_jogo.golo_fora = gf
-            novo_jogo.realizado = True
-            s.jogos.append(novo_jogo)
+            # Adiciona o jogo através da classe Serie (jornada, casa, fora)
+            s.adicionar_jogo(1, c, f)
+            if s.jogos:
+                j = s.jogos[-1]
+                j.golo_casa = gc
+                j.golo_fora = gf
+                j.realizado = True
                 
         g.series[nome_s] = s
     
@@ -135,8 +137,7 @@ with tab_fase1:
                 
                 if st.button("Agendar Jogo"):
                     if num_casa in s_ativa.equipas and num_fora in s_ativa.equipas:
-                        novo_j = Jogo(jornada=int(jornada_in), equipa_casa=int(num_casa), equipa_fora=int(num_fora))
-                        s_ativa.jogos.append(novo_j)
+                        s_ativa.adicionar_jogo(int(jornada_in), int(num_casa), int(num_fora))
                         gestor_dados.guardar_dados(gestor)
                         st.success(f"Jogo da Jornada {jornada_in} adicionado!")
                         st.rerun()
