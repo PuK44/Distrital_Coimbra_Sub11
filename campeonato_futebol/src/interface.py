@@ -12,14 +12,16 @@ from src.gestor_dados import GestorDados
 # Configuração da página
 st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 
-# Inicialização do gestor e dados
+# Inicialização segura do gestor de dados e do campeonato
 if "gestor_dados" not in st.session_state:
-    st.session_state.gestor_dados = GestorDados()
+    st.session_state["gestor_dados"] = GestorDados()
+
+gestor_dados = st.session_state["gestor_dados"]
 
 if "campeonato" not in st.session_state:
-    st.session_state.campeonato = st.session_state.gestor_dados.carregar()
+    st.session_state["campeonato"] = gestor_dados.carregar()
 
-gestor = st.session_state.campeonato
+gestor = st.session_state["campeonato"]
 
 st.title("⚽ Troféu Distrital Coimbra - Sub11")
 
