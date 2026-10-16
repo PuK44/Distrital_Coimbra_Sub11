@@ -6,17 +6,17 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import streamlit as st
 import pandas as pd
-from src.modelos import GestorCampeonato, Serie
+from src.modelos import GestorCampeonato, Serie, Jogo
 from src.gestor_dados import GestorDados
 
 # Configuração da página
 st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 
-# Inicialização segura
+# Inicialização segura do Gestor de Dados
 gestor_dados = GestorDados()
 st.session_state["gestor_dados"] = gestor_dados
 
-# Dados pré-carregados das 4 séries
+# Estutura inicial com as 4 Séries, 44 Equipas e Jornada 1
 DADOS_INICIAIS = {
     "SÉRIE A": {
         "equipas": {
@@ -69,15 +69,20 @@ def inicializar_campeonato():
         s = Serie(nome_s)
         for num, eq in info["equipas"].items():
             s.adicionar_equipa(num, eq)
+        
         for c, f, gc, gf in info["jogos_j1"]:
-            # Chamada por ordem posicional (jornada, equipa_casa, equipa_fora)
-            j = s.adicionar_jogo(1, c, f)
-            j.definir_resultado(gc, gf)
+            novo_jogo = Jogo(jornada=1, equipa_casa=c, equipa_fora=f)
+            novo_jogo.golo_casa = gc
+            novo_jogo.golo_fora = gf
+            novo_jogo.realizado = True
+            s.jogos.append(novo_jogo)
+                
         g.series[nome_s] = s
+    
     gestor_dados.guardar_dados(g)
     return g
 
-# Tenta carregar do JSON; se não tiver as 4 séries, força a criação inicial
+# Garante o carregamento ou recriação do campeonato com as 4 Séries
 g_existente = None
 try:
     g_existente = gestor_dados.carregar_dados()
@@ -113,7 +118,7 @@ with tab_fase1:
     serie_ativa = st.selectbox("Selecionar Série", series_list)
     s_ativa = gestor.series[serie_ativa]
 
-    # Painel do Admin para agendar jogos por número de equipa
+    # Painel do Admin para consultar números e agendar jogos
     if e_admin:
         with st.expander("🛠️ ÁREA ADMIN: Guia de Números das Equipas & Criar Jogos", expanded=True):
             col_a, col_b = st.columns([1, 1])
@@ -126,13 +131,14 @@ with tab_fase1:
                 st.write("**Agendar Novo Jogo:**")
                 num_casa = st.number_input("Nº Equipa Casa", min_value=1, max_value=20, value=1, key="ncasa")
                 num_fora = st.number_input("Nº Equipa Fora", min_value=1, max_value=20, value=2, key="nfora")
-                jornada = st.number_input("Jornada", min_value=1, max_value=30, value=2, key="jornada_in")
+                jornada_in = st.number_input("Jornada", min_value=1, max_value=30, value=2, key="jornada_in")
                 
                 if st.button("Agendar Jogo"):
                     if num_casa in s_ativa.equipas and num_fora in s_ativa.equipas:
-                        s_ativa.adicionar_jogo(int(jornada), int(num_casa), int(num_fora))
+                        novo_j = Jogo(jornada=int(jornada_in), equipa_casa=int(num_casa), equipa_fora=int(num_fora))
+                        s_ativa.jogos.append(novo_j)
                         gestor_dados.guardar_dados(gestor)
-                        st.success(f"Jogo da Jornada {jornada} adicionado!")
+                        st.success(f"Jogo da Jornada {jornada_in} adicionado!")
                         st.rerun()
                     else:
                         st.error("Número de equipa inválido para esta série.")
@@ -178,7 +184,9 @@ with tab_fase1:
                         jogo.golo_fora = 0
                     else:
                         gc, gf = map(int, novo_res.split(" - "))
-                        jogo.definir_resultado(gc, gf)
+                        jogo.golo_casa = gc
+                        jogo.golo_fora = gf
+                        jogo.realizado = True
                     
                     gestor_dados.guardar_dados(gestor)
                     st.success("Resultado atualizado!")
