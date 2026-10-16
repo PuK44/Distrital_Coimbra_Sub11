@@ -379,9 +379,9 @@ with tab_lousanense:
                 nome_f = eq_fora.nome if eq_fora else f"Equipa {j.equipa_fora}"
                 jogos_lousanense.append((j.jornada, nome_c, nome_f, j.equipa_casa == 1))
 
-    col_stats, col_espaco_l, col_ficha = st.columns([1.1, 0.15, 0.95])
+    col_stats, col_espaco_l, col_ficha = st.columns([1.25, 0.1, 0.95])
 
-    # --- COLUNA DA ESQUERDA: TABELA DE JOGADORES (JOGOS, GOLOS & ASSISTÊNCIAS) ---
+    # --- COLUNA DA ESQUERDA: TABELA DE JOGADORES ---
     with col_stats:
         st.subheader("📊 Tabela de Jogadores")
 
@@ -390,12 +390,10 @@ with tab_lousanense:
 
         # Agrega presenças, golos e assistências de todas as fichas guardadas
         for j_str, ficha in campeonato.fichas_lousanense.items():
-            # Contagem de Jogos
             for jog in ficha.get("convocados", []):
                 if jog in stats_jogadores:
                     stats_jogadores[jog]["Jogos"] += 1
 
-            # Contagem de Golos e Assistências
             for golo in ficha.get("detalhes", []):
                 autor = golo.get("autor")
                 assist = golo.get("assistencia")
@@ -407,27 +405,39 @@ with tab_lousanense:
 
         lista_stats = []
         for nome_p, datos in stats_jogadores.items():
+            j_cnt = datos["Jogos"]
+            g_cnt = datos["Golos"]
+            a_cnt = datos["Assistências"]
+            
+            media_g = round(g_cnt / j_cnt, 2) if j_cnt > 0 else 0.0
+            media_a = round(a_cnt / j_cnt, 2) if j_cnt > 0 else 0.0
+
             lista_stats.append({
                 "Jogador": nome_p,
                 "Posição": datos["Posição"],
-                "Jogos": datos["Jogos"],
-                "Golos": datos["Golos"],
-                "Assistências": datos["Assistências"]
+                "Jogos": j_cnt,
+                "Golos": g_cnt,
+                "Média Golos": media_g,
+                "Assistências": a_cnt,
+                "Média Assist.": media_a
             })
 
         df_jogadores = pd.DataFrame(lista_stats)
-        df_jogadores = df_jogadores.sort_values(by=["Golos", "Assistências", "Jogos", "Jogador"], ascending=[False, False, False, True])
+        df_jogadores = df_jogadores.sort_values(by=["Golos", "Média Golos", "Assistências", "Jogos", "Jogador"], ascending=[False, False, False, False, True])
 
         st.dataframe(
             df_jogadores,
             use_container_width=True,
             hide_index=True,
+            height=620,  # Altura aumentada para mostrar todos os 16 jogadores sem scroll
             column_config={
                 "Jogador": st.column_config.TextColumn("Jogador", width="medium"),
-                "Posição": st.column_config.TextColumn("Posição", width="small"),
-                "Jogos": st.column_config.NumberColumn("👕 Jogos", width="small"),
-                "Golos": st.column_config.NumberColumn("⚽ Golos", width="small"),
-                "Assistências": st.column_config.NumberColumn("👟 Assistências", width="small"),
+                "Posição": st.column_config.TextColumn("Pos.", width="small"),
+                "Jogos": st.column_config.NumberColumn("👕 J", width="small"),
+                "Golos": st.column_config.NumberColumn("⚽ G", width="small"),
+                "Média Golos": st.column_config.NumberColumn("⚽/J", format="%.2f", width="small"),
+                "Assistências": st.column_config.NumberColumn("👟 A", width="small"),
+                "Média Assist.": st.column_config.NumberColumn("👟/J", format="%.2f", width="small"),
             }
         )
 
@@ -452,7 +462,7 @@ with tab_lousanense:
 
             ficha_atual = campeonato.fichas_lousanense.get(j_str_key, {})
 
-            # PAINEL DO ADMINISTRADOR (Lançamento da ficha, convocados e marcadores)
+            # PAINEL DO ADMINISTRADOR
             if e_admin:
                 st.markdown("##### 🛠️ Lançar / Alterar Ficha de Jogo")
                 
@@ -472,7 +482,6 @@ with tab_lousanense:
                         key=f"gs_{j_str_key}"
                     )
 
-                # Seleção dos Jogadores que Jogaram
                 st.write("**Jogadores Utilizados neste Jogo:**")
                 nomes_jogadores_lista = [p["nome"] for p in PLANTEL_LOUSANENSE]
                 convocados_antigos = ficha_atual.get("convocados", [])
@@ -521,7 +530,7 @@ with tab_lousanense:
                     st.success("Ficha de jogo guardada e estatísticas atualizadas!")
                     st.rerun()
 
-            # VISUALIZAÇÃO PARA VISITANTES (E resumo para o Admin)
+            # VISUALIZAÇÃO PARA VISITANTES
             if ficha_atual:
                 st.markdown("---")
                 st.markdown(
