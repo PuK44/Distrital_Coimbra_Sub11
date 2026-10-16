@@ -28,25 +28,15 @@ DADOS_INICIAIS = {
         },
         "jogos_j1": [(1,2,1,0), (3,4,1,0), (5,6,1,0), (7,8,0,0), (9,10,0,1), (11,12,0,1)],
         "jogos_sem_resultado": [
-            # Jornada 2
             (2, 4, 9), (2, 12, 3), (2, 6, 1), (2, 8, 11), (2, 10, 5), (2, 2, 7),
-            # Jornada 3
             (3, 1, 10), (3, 7, 11), (3, 9, 12), (3, 2, 6), (3, 3, 8), (3, 5, 4),
-            # Jornada 4
             (4, 8, 9), (4, 11, 3), (4, 4, 1), (4, 10, 2), (4, 6, 7), (4, 12, 5),
-            # Jornada 5
             (5, 7, 3), (5, 6, 10), (5, 9, 11), (5, 1, 12), (5, 5, 8), (5, 2, 4),
-            # Jornada 6
             (6, 3, 9), (6, 8, 1), (6, 12, 2), (6, 10, 7), (6, 4, 6), (6, 11, 5),
-            # Jornada 7
             (7, 7, 9), (7, 5, 3), (7, 1, 11), (7, 6, 12), (7, 2, 8), (7, 10, 4),
-            # Jornada 8
             (8, 12, 10), (8, 3, 1), (8, 11, 2), (8, 4, 7), (8, 8, 6), (8, 9, 5),
-            # Jornada 9
             (9, 1, 9), (9, 2, 3), (9, 6, 11), (9, 4, 12), (9, 10, 8), (9, 7, 5),
-            # Jornada 10
             (10, 11, 10), (10, 5, 1), (10, 7, 12), (10, 9, 2), (10, 3, 6), (10, 8, 4),
-            # Jornada 11
             (11, 6, 9), (11, 10, 3), (11, 4, 11), (11, 1, 7), (11, 12, 8), (11, 2, 5)
         ]
     },
@@ -61,25 +51,15 @@ DADOS_INICIAIS = {
         },
         "jogos_j1": [(1,2,0,1), (3,4,0,1), (5,6,0,0), (7,8,1,0), (9,10,0,1)],
         "jogos_sem_resultado": [
-            # Jornada 2
             (2, 11, 5), (2, 10, 3), (2, 2, 7), (2, 8, 9), (2, 6, 1),
-            # Jornada 3
             (3, 9, 2), (3, 1, 11), (3, 7, 6), (3, 3, 8), (3, 4, 10),
-            # Jornada 4
             (4, 5, 1), (4, 8, 4), (4, 2, 3), (4, 11, 7), (4, 6, 9),
-            # Jornada 5
             (5, 4, 2), (5, 9, 11), (5, 7, 5), (5, 3, 6), (5, 10, 8),
-            # Jornada 6
             (6, 6, 4), (6, 11, 3), (6, 1, 7), (6, 5, 9), (6, 2, 10),
-            # Jornada 7
             (7, 8, 2), (7, 9, 1), (7, 4, 11), (7, 3, 5), (7, 10, 6),
-            # Jornada 8
             (8, 5, 4), (8, 6, 8), (8, 1, 3), (8, 7, 9), (8, 11, 10),
-            # Jornada 9
             (9, 4, 1), (9, 8, 11), (9, 10, 5), (9, 2, 6), (9, 3, 7),
-            # Jornada 10
             (10, 11, 2), (10, 7, 4), (10, 5, 8), (10, 9, 3), (10, 1, 10),
-            # Jornada 11
             (11, 8, 1), (11, 6, 11), (11, 2, 5), (11, 10, 7), (11, 4, 9)
         ]
     },
@@ -94,25 +74,15 @@ DADOS_INICIAIS = {
         },
         "jogos_j1": [(1,2,1,0), (3,4,0,1), (5,6,0,1), (7,8,0,1), (9,10,0,1)],
         "jogos_sem_resultado": [
-            # Jornada 2
             (2, 6, 3), (2, 11, 9), (2, 8, 5), (2, 10, 1), (2, 2, 7),
-            # Jornada 3
             (3, 1, 11), (3, 5, 2), (3, 7, 10), (3, 4, 6), (3, 3, 8),
-            # Jornada 4
             (4, 10, 5), (4, 11, 7), (4, 9, 1), (4, 8, 4), (4, 2, 3),
-            # Jornada 5
             (5, 5, 11), (5, 4, 2), (5, 3, 10), (5, 7, 9), (5, 6, 8),
-            # Jornada 6
             (6, 9, 5), (6, 1, 7), (6, 10, 4), (6, 2, 6), (6, 11, 3),
-            # Jornada 7
             (7, 4, 11), (7, 8, 2), (7, 6, 10), (7, 3, 9), (7, 5, 1),
-            # Jornada 8
             (8, 7, 5), (8, 9, 4), (8, 11, 6), (8, 10, 8), (8, 1, 3),
-            # Jornada 9
             (9, 8, 11), (9, 2, 10), (9, 6, 9), (9, 3, 7), (9, 4, 1),
-            # Jornada 10
             (10, 11, 2), (10, 7, 4), (10, 1, 6), (10, 9, 8), (10, 5, 3),
-            # Jornada 11
             (11, 4, 5), (11, 10, 11), (11, 2, 9), (11, 6, 7), (11, 8, 1)
         ]
     },
@@ -127,25 +97,15 @@ DADOS_INICIAIS = {
         },
         "jogos_j1": [(1,2,1,0), (3,4,0,1), (5,6,1,0), (7,8,0,0), (9,10,0,1), (11,12,1,0)],
         "jogos_sem_resultado": [
-            # Jornada 2
             (2, 2, 5), (2, 8, 3), (2, 6, 9), (2, 10, 11), (2, 12, 7), (2, 4, 1),
-            # Jornada 3
             (3, 3, 12), (3, 9, 2), (3, 1, 5), (3, 7, 10), (3, 11, 6), (3, 4, 8),
-            # Jornada 4
             (4, 10, 3), (4, 5, 9), (4, 12, 4), (4, 8, 1), (4, 2, 11), (4, 6, 7),
-            # Jornada 5
             (5, 8, 12), (5, 1, 9), (5, 7, 2), (5, 11, 5), (5, 4, 10), (5, 3, 6),
-            # Jornada 6
             (6, 2, 3), (6, 6, 4), (6, 12, 1), (6, 9, 11), (6, 5, 7), (6, 10, 8),
-            # Jornada 7
             (7, 7, 9), (7, 4, 2), (7, 3, 5), (7, 12, 10), (7, 1, 11), (7, 8, 6),
-            # Jornada 8
             (8, 9, 3), (8, 6, 12), (8, 5, 4), (8, 10, 1), (8, 11, 7), (8, 2, 8),
-            # Jornada 9
             (9, 4, 9), (9, 12, 2), (9, 8, 5), (9, 3, 11), (9, 10, 6), (9, 1, 7),
-            # Jornada 10
             (10, 7, 3), (10, 5, 12), (10, 11, 4), (10, 2, 10), (10, 1, 6), (10, 9, 8),
-            # Jornada 11
             (11, 12, 9), (11, 6, 2), (11, 10, 5), (11, 3, 1), (11, 8, 11), (11, 4, 7)
         ]
     }
@@ -156,16 +116,13 @@ def criar_campeonato_inicial():
     for nome_s, info in DADOS_INICIAIS.items():
         s = Serie(nome_s)
         
-        # Regista Equipas
         for num, eq in info["equipas"].items():
             s.adicionar_equipa(num, eq)
             
-        # Regista Jogos da Jornada 1 com resultados
         for c, f, gc, gf in info["jogos_j1"]:
             j = s.adicionar_jogo(1, c, f)
             j.definir_resultado(gc, gf)
             
-        # Regista Jogos da Jornada 2 à 11 por jogar
         for j_num, c, f in info["jogos_sem_resultado"]:
             s.adicionar_jogo(j_num, c, f)
             
@@ -214,7 +171,7 @@ with tab_fase1:
     serie_sel = st.selectbox("Selecionar Série", series_nomes)
     s_obj = campeonato.series[serie_sel]
 
-    # Painel exclusivo de Administrador: Agendar e Alterar/Eliminar Jogos
+    # Painel exclusivo de Administrador
     if e_admin:
         with st.expander("🛠️ ÁREA ADMIN: Gestão de Jogos & Guia de Equipas", expanded=False):
             col_a, col_b = st.columns([1, 1])
@@ -279,8 +236,8 @@ with tab_fase1:
                                 st.success("Jogo eliminado!")
                                 st.rerun()
 
-    # Visualização e Lançamento de Resultados
-    col1, col2 = st.columns([1, 1])
+    # Visualização e Lançamento de Resultados com nova largura de colunas (1 vs 1.45)
+    col1, col2 = st.columns([1, 1.45])
     
     with col1:
         st.subheader("🗓️ Jogos & Resultados")
@@ -300,7 +257,24 @@ with tab_fase1:
                 nome_c = eq_c.nome if eq_c else f"Equipa {jogo.equipa_casa}"
                 nome_f = eq_f.nome if eq_f else f"Equipa {jogo.equipa_fora}"
                 
-                st.write(f"**Jornada {jogo.jornada}:** {nome_c} vs {nome_f}")
+                # Cartão Visual de Destaque da Jornada
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color: #1e293b;
+                        color: #ffffff;
+                        padding: 10px 14px;
+                        border-radius: 8px;
+                        border-left: 5px solid #00d47e;
+                        margin-bottom: 8px;
+                        font-size: 15px;
+                        font-weight: 600;
+                    ">
+                        ⚽ Jornada {jogo.jornada}: {nome_c} <span style="color: #94a3b8; font-weight: 400;">vs</span> {nome_f}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
                 
                 res_atual = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
                 opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1"]
@@ -331,6 +305,18 @@ with tab_fase1:
         st.subheader("📊 Tabela de Classificação")
         df_classif = s_obj.obter_classificacao()
         if not df_classif.empty:
-            st.dataframe(df_classif, width=600, hide_index=True)
+            st.dataframe(
+                df_classif,
+                use_container_width=True,
+                hide_index=True,
+                column_config={
+                    "Equipa": st.column_config.TextColumn("Equipa", width="large"),
+                    "Pts": st.column_config.NumberColumn("Pts", width="small"),
+                    "J": st.column_config.NumberColumn("J", width="small"),
+                    "V": st.column_config.NumberColumn("V", width="small"),
+                    "E": st.column_config.NumberColumn("E", width="small"),
+                    "D": st.column_config.NumberColumn("D", width="small"),
+                }
+            )
         else:
             st.info("Sem equipas registadas.")
