@@ -159,7 +159,7 @@ e_admin = (senha_admin == "admin123")
 if e_admin:
     st.sidebar.success("Modo Admin Ativo")
 else:
-    st.sidebar.info("Modo Visitante (Registo de resultados)")
+    st.sidebar.info("Modo Visitante (Consulta de resultados)")
 
 # Separadores das Fases
 tab_fase1, tab_fase2 = st.tabs(["Primeira Fase", "Segunda Fase"])
@@ -236,14 +236,21 @@ with tab_fase1:
                                 st.success("Jogo eliminado!")
                                 st.rerun()
 
-    # Visualização e Lançamento de Resultados com nova largura de colunas (1 vs 1.45)
-    col1, col2 = st.columns([1, 1.45])
+    # Layout Principal com Coluna de Separação (col_espaco) entre os Jogos e a Classificação
+    col1, col_espaco, col2 = st.columns([1.1, 0.15, 0.95])
     
     with col1:
         st.subheader("🗓️ Jogos & Resultados")
         
         jornadas_existentes = sorted(list(set(j.jornada for j in s_obj.jogos))) if s_obj.jogos else []
-        jornada_filtro = st.selectbox("Filtrar por Jornada", jornadas_existentes) if jornadas_existentes else None
+        
+        # Filtro de Jornada reduzido a metade da largura
+        if jornadas_existentes:
+            col_f1, col_f2 = st.columns([1, 1])
+            with col_f1:
+                jornada_filtro = st.selectbox("Filtrar por Jornada", jornadas_existentes)
+        else:
+            jornada_filtro = None
 
         jogos_exibir = [j for j in s_obj.jogos if j.jornada == jornada_filtro] if jornada_filtro else s_obj.jogos
 
@@ -257,7 +264,7 @@ with tab_fase1:
                 nome_c = eq_c.nome if eq_c else f"Equipa {jogo.equipa_casa}"
                 nome_f = eq_f.nome if eq_f else f"Equipa {jogo.equipa_fora}"
                 
-                # Cartão Visual de Destaque da Jornada
+                # Cartão Visual de Destaque da Jornada (Largura Total)
                 st.markdown(
                     f"""
                     <div style="
@@ -276,41 +283,66 @@ with tab_fase1:
                     unsafe_allow_html=True
                 )
                 
-                res_atual = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
-                opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1"]
-                idx_default = opcoes_res.index(res_atual) if res_atual in opcoes_res else 0
+                res_texto = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
                 
-                novo_res = st.selectbox(
-                    f"Resultado (Jogo {idx+1})",
-                    opcoes_res,
-                    index=idx_default,
-                    key=f"res_{serie_sel}_{jogo.jornada}_{idx}"
-                )
-                
-                if st.button(f"Guardar Resultado (Jogo {idx+1})", key=f"btn_{serie_sel}_{jogo.jornada}_{idx}"):
-                    if novo_res == "Por jogar":
-                        jogo.realizado = False
-                        jogo.golo_casa = 0
-                        jogo.golo_fora = 0
-                    else:
-                        gc, gf = map(int, novo_res.split(" - "))
-                        jogo.definir_resultado(gc, gf)
-                    
-                    gestor_dados.guardar_dados(campeonato)
-                    st.success("Resultado guardado com sucesso!")
-                    st.rerun()
+                # Apenas Administrador pode lançar/alterar resultados
+                if e_admin:
+                    col_r1, col_r2 = st.columns([1, 1])
+                    with col_r1:
+                        opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1"]
+                        idx_default = opcoes_res.index(res_texto) if res_texto in opcoes_res else 0
+                        
+                        novo_res = st.selectbox(
+                            f"Resultado (Jogo {idx+1})",
+                            opcoes_res,
+                            index=idx_default,
+                            key=f"res_{serie_sel}_{jogo.jornada}_{idx}"
+                        )
+                        
+                        if st.button(f"Guardar Resultado", key=f"btn_{serie_sel}_{jogo.jornada}_{idx}"):
+                            if novo_res == "Por jogar":
+                                jogo.realizado = False
+                                jogo.golo_casa = 0
+                                jogo.golo_fora = 0
+                            else:
+                                gc, gf = map(int, novo_res.split(" - "))
+                                jogo.definir_resultado(gc, gf)
+                            
+                            gestor_dados.guardar_dados(campeonato)
+                            st.success("Resultado guardado!")
+                            st.rerun()
+                else:
+                    # Visitantes apenas consultam a informação sem caixas editáveis
+                    cor_status = "#00d47e" if jogo.realizado else "#94a3b8"
+                    st.markdown(
+                        f"""
+                        <div style="margin-top: -2px; margin-bottom: 12px; padding-left: 4px; font-size: 14px;">
+                            <span style="color: #94a3b8;">Resultado:</span> 
+                            <strong style="color: {cor_status}; font-size: 15px;">{res_texto}</strong>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
                 st.divider()
 
     with col2:
         st.subheader("📊 Tabela de Classificação")
         df_classif = s_obj.obter_classificacao()
         if not df_classif.empty:
+            # Estilização com pandas Styler: centraliza os dados numéricos e alinha equipas à esquerda
+            df_styled = df_classif.style.set_properties(
+                **{'text-align': 'center'}
+            ).set_properties(
+                subset=['Equipa'],
+                **{'text-align': 'left'}
+            )
+            
             st.dataframe(
-                df_classif,
+                df_styled,
                 use_container_width=True,
                 hide_index=True,
                 column_config={
-                    "Equipa": st.column_config.TextColumn("Equipa", width="large"),
+                    "Equipa": st.column_config.TextColumn("Equipa", width="medium"),
                     "Pts": st.column_config.NumberColumn("Pts", width="small"),
                     "J": st.column_config.NumberColumn("J", width="small"),
                     "V": st.column_config.NumberColumn("V", width="small"),
