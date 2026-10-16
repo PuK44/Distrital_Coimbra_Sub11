@@ -121,11 +121,13 @@ class Serie:
 
 class GestorCampeonato:
     def __init__(self):
-        self.series = {}  # {str: Serie}
+        self.series = {}             # {str: Serie}
+        self.fichas_lousanense = {}  # {str(jornada): dict_ficha}
 
     def to_dict(self):
         return {
-            "series": {k: v.to_dict() for k, v in self.series.items()}
+            "series": {k: v.to_dict() for k, v in self.series.items()},
+            "fichas_lousanense": self.fichas_lousanense
         }
 
     @classmethod
@@ -133,4 +135,5 @@ class GestorCampeonato:
         gc = cls()
         for k, v in data.get("series", {}).items():
             gc.series[k] = Serie.from_dict(v)
+        gc.fichas_lousanense = data.get("fichas_lousanense", {})
         return gc
