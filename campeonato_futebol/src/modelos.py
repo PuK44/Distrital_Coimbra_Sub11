@@ -1,155 +1,146 @@
-from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Tuple
+import pandas as pd
 
-
-@dataclass
 class Equipa:
-    numero: int
-    nome: str
-    jogos: int = 0
-    vitorias: int = 0
-    empates: int = 0
-    derrotas: int = 0
-    pontos: int = 0
+    def __init__(self, id_num: int, nome: str):
+        self.id_num = id_num
+        self.nome = nome
 
-    def reset_estatisticas(self):
-        """Reinicia os pontos e estatísticas da equipa."""
-        self.jogos = 0
-        self.vitorias = 0
-        self.empates = 0
-        self.derrotas = 0
-        self.pontos = 0
+    def to_dict(self):
+        return {"id_num": self.id_num, "nome": self.nome}
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["id_num"], data["nome"])
 
 
-@dataclass
 class Jogo:
-    num_casa: int
-    num_fora: int
-    # Resultado pode ser '1-0' (Vitória Casa), '0-0' (Empate), '0-1' (Vitória Fora) ou None (não jogado)
-    resultado: Optional[str] = None
+    def __init__(self, jornada: int, equipa_casa: int, equipa_fora: int, golo_casa: int = 0, golo_fora: int = 0, realizado: bool = False):
+        self.jornada = jornada
+        self.equipa_casa = equipa_casa
+        self.equipa_fora = equipa_fora
+        self.golo_casa = golo_casa
+        self.golo_fora = golo_fora
+        self.realizado = realizado
 
-    def obter_pontos(self) -> Tuple[int, int]:
-        """
-        Retorna os pontos atribuídos (pontos_casa, pontos_fora) com base no resultado.
-        Vitória = 3 pts, Empate = 1 pt, Derrota = 0 pt.
-        """
-        if self.resultado == "1-0":
-            return 3, 0
-        elif self.resultado == "0-0":
-            return 1, 1
-        elif self.resultado == "0-1":
-            return 0, 3
-        return 0, 0
+    def definir_resultado(self, golo_casa: int, golo_fora: int):
+        self.golo_casa = golo_casa
+        self.golo_fora = golo_fora
+        self.realizado = True
+
+    def to_dict(self):
+        return {
+            "jornada": self.jornada,
+            "equipa_casa": self.equipa_casa,
+            "equipa_fora": self.equipa_fora,
+            "golo_casa": self.golo_casa,
+            "golo_fora": self.golo_fora,
+            "realizado": self.realizado
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            jornada=data["jornada"],
+            equipa_casa=data["equipa_casa"],
+            equipa_fora=data["equipa_fora"],
+            golo_casa=data.get("golo_casa", 0),
+            golo_fora=data.get("golo_fora", 0),
+            realizado=data.get("realizado", False)
+        )
 
 
 class Serie:
     def __init__(self, nome: str):
         self.nome = nome
-        self.equipas: Dict[int, Equipa] = {}  # Mapeia numero_equipa -> Objeto Equipa
-        self.jornadas: Dict[int, List[Jogo]] = {}  # Mapeia numero_jornada -> Lista de Jogos
+        self.equipas = {}  # {int_id: Equipa}
+        self.jogos = []     # list[Jogo]
 
-    def adicionar_equipa(self, numero: int, nome: str) -> bool:
-        """Adiciona uma equipa à série registando o seu número."""
-        if numero in self.equipas:
-            return False  # Número já atribuído nesta série
-        self.equipas[numero] = Equipa(numero=numero, nome=nome)
-        return True
+    def adicionar_equipa(self, id_num: int, nome: str):
+        self.equipas[id_num] = Equipa(id_num, nome)
 
-    def adicionar_jogo(self, jornada: int, num_casa: int, num_fora: int) -> bool:
-        """Adiciona um jogo manual a uma jornada através do número das equipas."""
-        if num_casa not in self.equipas or num_fora not in self.equipas:
-            return False  # Alguma das equipas não existe na série
-        
-        if jornada not in self.jornadas:
-            self.jornadas[jornada] = []
-            
-        self.jornadas[jornada].append(Jogo(num_casa=num_casa, num_fora=num_fora))
-        return True
+    def adicionar_jogo(self, jornada: int, equipa_casa: int, equipa_fora: int) -> Jogo:
+        j = Jogo(jornada, equipa_casa, equipa_fora)
+        self.jogos.append(j)
+        return j
 
-    def registar_resultado(self, jornada: int, indice_jogo: int, resultado: str) -> bool:
-        """Atualiza o resultado de um jogo específico de uma jornada ('1-0', '0-0' ou '0-1')."""
-        if resultado not in ["1-0", "0-0", "0-1"]:
-            return False
-            
-        if jornada in self.jornadas and 0 <= indice_jogo < len(self.jornadas[jornada]):
-            self.jornadas[jornada][indice_jogo].resultado = resultado
-            return True
-        return False
+    def obter_classificacao(self) -> pd.DataFrame:
+        classif = {}
+        for num, eq in self.equipas.items():
+            classif[num] = {
+                "Equipa": eq.nome,
+                "Pts": 0,
+                "J": 0,
+                "V": 0,
+                "E": 0,
+                "D": 0,
+                "GM": 0,
+                "GS": 0,
+                "DG": 0
+            }
 
-    def calcular_classificacao(self) -> List[Equipa]:
-        """Recalcula a tabela de classificação de toda a série."""
-        # 1. Reset às estatísticas de todas as equipas
-        for equipa in self.equipas.values():
-            equipa.reset_estatisticas()
+        for j in self.jogos:
+            if j.realizado and j.equipa_casa in classif and j.equipa_fora in classif:
+                c = classif[j.equipa_casa]
+                f = classif[j.equipa_fora]
 
-        # 2. Processar todos os jogos com resultado definido
-        for jogos in self.jornadas.values():
-            for jogo in jogos:
-                if jogo.resultado:
-                    eq_casa = self.equipas[jogo.num_casa]
-                    eq_fora = self.equipas[jogo.num_fora]
-                    pts_casa, pts_fora = jogo.obter_pontos()
+                c["J"] += 1
+                f["J"] += 1
+                c["GM"] += j.golo_casa
+                c["GS"] += j.golo_fora
+                f["GM"] += j.golo_fora
+                f["GS"] += j.golo_casa
 
-                    # Atualizar jogos efetuados
-                    eq_casa.jogos += 1
-                    eq_fora.jogos += 1
+                if j.golo_casa > j.golo_fora:
+                    c["Pts"] += 3
+                    c["V"] += 1
+                    f["D"] += 1
+                elif j.golo_casa < j.golo_fora:
+                    f["Pts"] += 3
+                    f["V"] += 1
+                    c["D"] += 1
+                else:
+                    c["Pts"] += 1
+                    f["Pts"] += 1
+                    c["E"] += 1
+                    f["E"] += 1
 
-                    # Atribuir pontos e registar V/E/D
-                    eq_casa.pontos += pts_casa
-                    eq_fora.pontos += pts_fora
+        for item in classif.values():
+            item["DG"] = item["GM"] - item["GS"]
 
-                    if pts_casa == 3:
-                        eq_casa.vitorias += 1
-                        eq_fora.derrotas += 1
-                    elif pts_fora == 3:
-                        eq_fora.vitorias += 1
-                        eq_casa.derrotas += 1
-                    else:
-                        eq_casa.empates += 1
-                        eq_fora.empates += 1
+        df = pd.DataFrame(list(classif.values()))
+        if not df.empty:
+            df = df.sort_values(by=["Pts", "DG", "GM", "Equipa"], ascending=[False, False, False, True])
+        return df
 
-        # 3. Ordenar tabela por Pontos (descendente) e Número da Equipa (ascendente como desempate)
-        tabela = list(self.equipas.values())
-        tabela.sort(key=lambda eq: (-eq.pontos, eq.numero))
-        return tabela
+    def to_dict(self):
+        return {
+            "nome": self.nome,
+            "equipas": {str(k): v.to_dict() for k, v in self.equipas.items()},
+            "jogos": [j.to_dict() for j in self.jogos]
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        s = cls(data["nome"])
+        for k, v in data.get("equipas", {}).items():
+            s.equipas[int(k)] = Equipa.from_dict(v)
+        for j_data in data.get("jogos", []):
+            s.jogos.append(Jogo.from_dict(j_data))
+        return s
 
 
 class GestorCampeonato:
     def __init__(self):
-        self.series_fase1: Dict[str, Serie] = {}
-        self.series_fase2: Dict[str, Serie] = {}
+        self.series = {}  # {str: Serie}
 
-    def gerar_fase2(self, vagas_por_grupo: int) -> bool:
-        """
-        Gera as séries da Fase 2 com base nas posições finais da Fase 1.
-        """
-        if not self.series_fase1:
-            return False
+    def to_dict(self):
+        return {
+            "series": {k: v.to_dict() for k, v in self.series.items()}
+        }
 
-        classificacoes = {}
-        for nome_s, serie in self.series_fase1.items():
-            classificacoes[nome_s] = serie.calcular_classificacao()
-
-        self.series_fase2.clear()
-
-        max_equipas = max(len(eqs) for eqs in classificacoes.values()) if classificacoes else 0
-        if max_equipas == 0:
-            return False
-
-        grupo_idx = 1
-        for inicio in range(0, max_equipas, vagas_por_grupo):
-            nome_serie_f2 = f"Fase 2 - Grupo {grupo_idx}"
-            nova_serie = Serie(nome=nome_serie_f2)
-
-            num_equipa_f2 = 1
-            for nome_s1, tabela in classificacoes.items():
-                fatia = tabela[inicio:inicio + vagas_por_grupo]
-                for eq in fatia:
-                    nova_serie.adicionar_equipa(numero=num_equipa_f2, nome=eq.nome)
-                    num_equipa_f2 += 1
-
-            if nova_serie.equipas:
-                self.series_fase2[nome_serie_f2] = nova_serie
-                grupo_idx += 1
-
-        return True
+    @classmethod
+    def from_dict(cls, data):
+        gc = cls()
+        for k, v in data.get("series", {}).items():
+            gc.series[k] = Serie.from_dict(v)
+        return gc
