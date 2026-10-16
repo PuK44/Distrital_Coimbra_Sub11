@@ -72,10 +72,7 @@ class Serie:
                 "J": 0,
                 "V": 0,
                 "E": 0,
-                "D": 0,
-                "GM": 0,
-                "GS": 0,
-                "DG": 0
+                "D": 0
             }
 
         for j in self.jogos:
@@ -85,10 +82,6 @@ class Serie:
 
                 c["J"] += 1
                 f["J"] += 1
-                c["GM"] += j.golo_casa
-                c["GS"] += j.golo_fora
-                f["GM"] += j.golo_fora
-                f["GS"] += j.golo_casa
 
                 if j.golo_casa > j.golo_fora:
                     c["Pts"] += 3
@@ -104,12 +97,9 @@ class Serie:
                     c["E"] += 1
                     f["E"] += 1
 
-        for item in classif.values():
-            item["DG"] = item["GM"] - item["GS"]
-
         df = pd.DataFrame(list(classif.values()))
         if not df.empty:
-            df = df.sort_values(by=["Pts", "DG", "GM", "Equipa"], ascending=[False, False, False, True])
+            df = df.sort_values(by=["Pts", "V", "J", "Equipa"], ascending=[False, False, True, True])
         return df
 
     def to_dict(self):
