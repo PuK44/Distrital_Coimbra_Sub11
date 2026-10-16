@@ -19,7 +19,7 @@ if "gestor_dados" not in st.session_state:
 gestor_dados = st.session_state["gestor_dados"]
 
 if "campeonato" not in st.session_state or st.session_state["campeonato"] is None:
-    dados_carregados = gestor_dados.carregar()
+    dados_carregados = gestor_dados.carregar_dados()
     st.session_state["campeonato"] = dados_carregados if dados_carregados is not None else GestorCampeonato()
 
 gestor = st.session_state["campeonato"]
@@ -50,7 +50,7 @@ with tab_fase1:
             if st.button("Criar Série"):
                 if nome_nova_serie and nome_nova_serie not in gestor.fase1_series:
                     gestor.fase1_series[nome_nova_serie] = Serie(nome_nova_serie)
-                    gestor_dados.guardar(gestor)
+                    gestor_dados.guardar_dados(gestor)
                     st.success(f"Série {nome_nova_serie} criada!")
                     st.rerun()
 
@@ -67,7 +67,7 @@ with tab_fase1:
                 if st.button("Adicionar / Atualizar Equipa"):
                     if nome_equipa:
                         s_obj.adicionar_equipa(int(num_equipa), nome_equipa)
-                        gestor_dados.guardar(gestor)
+                        gestor_dados.guardar_dados(gestor)
                         st.success(f"Equipa {num_equipa} - {nome_equipa} gravada!")
                         st.rerun()
                         
@@ -97,7 +97,7 @@ with tab_fase1:
                     if st.button("Agendar Jogo"):
                         if num_casa in s_ativa.equipas and num_fora in s_ativa.equipas:
                             s_ativa.adicionar_jogo(int(jornada), int(num_casa), int(num_fora))
-                            gestor_dados.guardar(gestor)
+                            gestor_dados.guardar_dados(gestor)
                             st.success("Jogo adicionado!")
                             st.rerun()
                         else:
@@ -136,7 +136,7 @@ with tab_fase1:
                             gc, gf = map(int, novo_res.split(" - "))
                             jogo.definir_resultado(gc, gf)
                         
-                        gestor_dados.guardar(gestor)
+                        gestor_dados.guardar_dados(gestor)
                         st.success("Resultado guardado com sucesso!")
                         st.rerun()
                     st.divider()
