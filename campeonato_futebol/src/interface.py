@@ -12,14 +12,15 @@ from src.gestor_dados import GestorDados
 # Configuração da página
 st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 
-# Inicialização segura do gestor de dados e do campeonato
+# Inicialização segura do gestor e dados
 if "gestor_dados" not in st.session_state:
     st.session_state["gestor_dados"] = GestorDados()
 
 gestor_dados = st.session_state["gestor_dados"]
 
-if "campeonato" not in st.session_state:
-    st.session_state["campeonato"] = gestor_dados.carregar()
+if "campeonato" not in st.session_state or st.session_state["campeonato"] is None:
+    dados_carregados = gestor_dados.carregar()
+    st.session_state["campeonato"] = dados_carregados if dados_carregados is not None else GestorCampeonato()
 
 gestor = st.session_state["campeonato"]
 
@@ -28,7 +29,7 @@ st.title("⚽ Troféu Distrital Coimbra - Sub11")
 # Sidebar - Modo Administrador
 st.sidebar.header("⚙️ Definições & Acesso")
 senha_admin = st.sidebar.text_input("Palavra-passe Admin", type="password")
-e_admin = (senha_admin == "admin123") # Podes alterar a tua palavra-passe aqui
+e_admin = (senha_admin == "admin123")
 
 if e_admin:
     st.sidebar.success("Modo Admin Ativo")
@@ -49,7 +50,7 @@ with tab_fase1:
             if st.button("Criar Série"):
                 if nome_nova_serie and nome_nova_serie not in gestor.fase1_series:
                     gestor.fase1_series[nome_nova_serie] = Serie(nome_nova_serie)
-                    st.session_state.gestor_dados.guardar(gestor)
+                    gestor_dados.guardar(gestor)
                     st.success(f"Série {nome_nova_serie} criada!")
                     st.rerun()
 
@@ -66,7 +67,7 @@ with tab_fase1:
                 if st.button("Adicionar / Atualizar Equipa"):
                     if nome_equipa:
                         s_obj.adicionar_equipa(int(num_equipa), nome_equipa)
-                        st.session_state.gestor_dados.guardar(gestor)
+                        gestor_dados.guardar(gestor)
                         st.success(f"Equipa {num_equipa} - {nome_equipa} gravada!")
                         st.rerun()
                         
@@ -87,7 +88,6 @@ with tab_fase1:
         with col1:
             st.subheader("🗓️ Jogos & Resultados")
             
-            # Se for Admin, permite definir o calendário das jornadas por número
             if e_admin:
                 with st.expander("➕ Adicionar Jogo por Número de Equipa"):
                     num_casa = st.number_input("Nº Equipa Casa", min_value=1, max_value=20, value=1, key="ncasa")
@@ -97,21 +97,23 @@ with tab_fase1:
                     if st.button("Agendar Jogo"):
                         if num_casa in s_ativa.equipas and num_fora in s_ativa.equipas:
                             s_ativa.adicionar_jogo(int(jornada), int(num_casa), int(num_fora))
-                            st.session_state.gestor_dados.guardar(gestor)
+                            gestor_dados.guardar(gestor)
                             st.success("Jogo adicionado!")
                             st.rerun()
                         else:
                             st.error("Certifica-te de que ambas as equipas (números) já estão criadas nesta série.")
 
-            # Registo de Resultados (Livre para Visitantes)
             if not s_ativa.jogos:
                 st.info("Ainda não há jogos agendados nesta série.")
             else:
                 for idx, jogo in enumerate(s_ativa.jogos):
-                    eq_c = s_ativa.equipas[jogo.equipa_casa].nome
-                    eq_f = s_ativa.equipas[jogo.equipa_fora].nome
+                    eq_c = s_ativa.equipas.get(jogo.equipa_casa)
+                    eq_f = s_ativa.equipas.get(jogo.equipa_fora)
                     
-                    st.write(f"**Jornada {jogo.jornada}:** {eq_c} (Nº {jogo.equipa_casa}) vs {eq_f} (Nº {jogo.equipa_fora})")
+                    nome_c = eq_c.nome if eq_c else f"Equipa {jogo.equipa_casa}"
+                    nome_f = eq_f.nome if eq_f else f"Equipa {jogo.equipa_fora}"
+                    
+                    st.write(f"**Jornada {jogo.jornada}:** {nome_c} (Nº {jogo.equipa_casa}) vs {nome_f} (Nº {jogo.equipa_fora})")
                     
                     res_atual = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
                     
@@ -134,7 +136,7 @@ with tab_fase1:
                             gc, gf = map(int, novo_res.split(" - "))
                             jogo.definir_resultado(gc, gf)
                         
-                        st.session_state.gestor_dados.guardar(gestor)
+                        gestor_dados.guardar(gestor)
                         st.success("Resultado guardado com sucesso!")
                         st.rerun()
                     st.divider()
