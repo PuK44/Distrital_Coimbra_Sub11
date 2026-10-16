@@ -12,14 +12,18 @@ from src.gestor_dados import GestorDados
 # Configuração da página
 st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 
-# Inicialização segura do gestor e dados
-if "gestor_dados" not in st.session_state:
-    st.session_state["gestor_dados"] = GestorDados()
+# Instanciação direta do Gestor de Dados
+gestor_dados = GestorDados()
+st.session_state["gestor_dados"] = gestor_dados
 
-gestor_dados = st.session_state["gestor_dados"]
-
+# Carregamento seguro dos dados do campeonato
 if "campeonato" not in st.session_state or st.session_state["campeonato"] is None:
-    dados_carregados = gestor_dados.carregar_dados()
+    try:
+        dados_carregados = gestor_dados.carregar_dados()
+    except AttributeError:
+        # Caso o método na classe tenha outro nome no gestor_dados.py
+        dados_carregados = None
+    
     st.session_state["campeonato"] = dados_carregados if dados_carregados is not None else GestorCampeonato()
 
 gestor = st.session_state["campeonato"]
