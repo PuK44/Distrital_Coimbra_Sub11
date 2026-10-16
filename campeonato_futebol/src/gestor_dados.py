@@ -13,7 +13,7 @@ class GestorDados:
         except Exception as e:
             print(f"Erro ao guardar dados: {e}")
 
-    def carregar_dados() -> GestorCampeonato:
+    def carregar_dados(self) -> GestorCampeonato:
         if not os.path.exists(self.caminho_ficheiro):
             return None
         try:
