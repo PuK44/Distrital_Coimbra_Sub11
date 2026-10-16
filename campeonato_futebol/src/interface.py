@@ -15,7 +15,7 @@ st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 # Inicialização do gestor de dados
 gestor_dados = GestorDados()
 
-# Estrutura com as 4 Séries, 44 Equipas e Resultados da Jornada 1
+# Estrutura Completa da Primeira Fase (Jornadas 1 a 11 para as 4 Séries)
 DADOS_INICIAIS = {
     "SÉRIE A": {
         "equipas": {
@@ -26,7 +26,29 @@ DADOS_INICIAIS = {
             9: "Co Jardim Alva", 10: "Mocidade Fc",
             11: "Gd Tourizense", 12: "Ca Gândaras"
         },
-        "jogos_j1": [(1,2,1,0), (3,4,1,0), (5,6,1,0), (7,8,0,0), (9,10,0,1), (11,12,0,1)]
+        "jogos_j1": [(1,2,1,0), (3,4,1,0), (5,6,1,0), (7,8,0,0), (9,10,0,1), (11,12,0,1)],
+        "jogos_sem_resultado": [
+            # Jornada 2
+            (2, 4, 9), (2, 12, 3), (2, 6, 1), (2, 8, 11), (2, 10, 5), (2, 2, 7),
+            # Jornada 3
+            (3, 1, 10), (3, 7, 11), (3, 9, 12), (3, 2, 6), (3, 3, 8), (3, 5, 4),
+            # Jornada 4
+            (4, 8, 9), (4, 11, 3), (4, 4, 1), (4, 10, 2), (4, 6, 7), (4, 12, 5),
+            # Jornada 5
+            (5, 7, 3), (5, 6, 10), (5, 9, 11), (5, 1, 12), (5, 5, 8), (5, 2, 4),
+            # Jornada 6
+            (6, 3, 9), (6, 8, 1), (6, 12, 2), (6, 10, 7), (6, 4, 6), (6, 11, 5),
+            # Jornada 7
+            (7, 7, 9), (7, 5, 3), (7, 1, 11), (7, 6, 12), (7, 2, 8), (7, 10, 4),
+            # Jornada 8
+            (8, 12, 10), (8, 3, 1), (8, 11, 2), (8, 4, 7), (8, 8, 6), (8, 9, 5),
+            # Jornada 9
+            (9, 1, 9), (9, 2, 3), (9, 6, 11), (9, 4, 12), (9, 10, 8), (9, 7, 5),
+            # Jornada 10
+            (10, 11, 10), (10, 5, 1), (10, 7, 12), (10, 9, 2), (10, 3, 6), (10, 8, 4),
+            # Jornada 11
+            (11, 6, 9), (11, 10, 3), (11, 4, 11), (11, 1, 7), (11, 12, 8), (11, 2, 5)
+        ]
     },
     "SÉRIE B": {
         "equipas": {
@@ -34,9 +56,32 @@ DADOS_INICIAIS = {
             3: "Cd Assafarge", 4: "Gr Vigor Mocidade",
             5: "Uc Eirense", 6: "Ad Souselas",
             7: "Académica Coimbra/Oaf", 8: "A. D. Briosa Talent",
-            9: "Académica Coimbra/Sf", 10: "Esperança Ac"
+            9: "Académica Coimbra/Sf", 10: "Esperança Ac",
+            11: "Af N10"
         },
-        "jogos_j1": [(1,2,0,1), (3,4,0,1), (5,6,0,0), (7,8,1,0), (9,10,0,1)]
+        "jogos_j1": [(1,2,0,1), (3,4,0,1), (5,6,0,0), (7,8,1,0), (9,10,0,1)],
+        "jogos_sem_resultado": [
+            # Jornada 2
+            (2, 11, 5), (2, 10, 3), (2, 2, 7), (2, 8, 9), (2, 6, 1),
+            # Jornada 3
+            (3, 9, 2), (3, 1, 11), (3, 7, 6), (3, 3, 8), (3, 4, 10),
+            # Jornada 4
+            (4, 5, 1), (4, 8, 4), (4, 2, 3), (4, 11, 7), (4, 6, 9),
+            # Jornada 5
+            (5, 4, 2), (5, 9, 11), (5, 7, 5), (5, 3, 6), (5, 10, 8),
+            # Jornada 6
+            (6, 6, 4), (6, 11, 3), (6, 1, 7), (6, 5, 9), (6, 2, 10),
+            # Jornada 7
+            (7, 8, 2), (7, 9, 1), (7, 4, 11), (7, 3, 5), (7, 10, 6),
+            # Jornada 8
+            (8, 5, 4), (8, 6, 8), (8, 1, 3), (8, 7, 9), (8, 11, 10),
+            # Jornada 9
+            (9, 4, 1), (9, 8, 11), (9, 10, 5), (9, 2, 6), (9, 3, 7),
+            # Jornada 10
+            (10, 11, 2), (10, 7, 4), (10, 5, 8), (10, 9, 3), (10, 1, 10),
+            # Jornada 11
+            (11, 8, 1), (11, 6, 11), (11, 2, 5), (11, 10, 7), (11, 4, 9)
+        ]
     },
     "SÉRIE C": {
         "equipas": {
@@ -44,9 +89,32 @@ DADOS_INICIAIS = {
             3: "Cl. Condeixa", 4: "Ar Casaense",
             5: "Cd Carapinheirense", 6: "Ançã Fc",
             7: "Fc São Silvestre", 8: "Gd Sepins",
-            9: "Sc Ribeirense", 10: "Gd Sourense \"A\""
+            9: "Sc Ribeirense", 10: "Gd Sourense \"A\"",
+            11: "Sc Povoense"
         },
-        "jogos_j1": [(1,2,1,0), (3,4,0,1), (5,6,0,1), (7,8,0,1), (9,10,0,1)]
+        "jogos_j1": [(1,2,1,0), (3,4,0,1), (5,6,0,1), (7,8,0,1), (9,10,0,1)],
+        "jogos_sem_resultado": [
+            # Jornada 2
+            (2, 6, 3), (2, 11, 9), (2, 8, 5), (2, 10, 1), (2, 2, 7),
+            # Jornada 3
+            (3, 1, 11), (3, 5, 2), (3, 7, 10), (3, 4, 6), (3, 3, 8),
+            # Jornada 4
+            (4, 10, 5), (4, 11, 7), (4, 9, 1), (4, 8, 4), (4, 2, 3),
+            # Jornada 5
+            (5, 5, 11), (5, 4, 2), (5, 3, 10), (5, 7, 9), (5, 6, 8),
+            # Jornada 6
+            (6, 9, 5), (6, 1, 7), (6, 10, 4), (6, 2, 6), (6, 11, 3),
+            # Jornada 7
+            (7, 4, 11), (7, 8, 2), (7, 6, 10), (7, 3, 9), (7, 5, 1),
+            # Jornada 8
+            (8, 7, 5), (8, 9, 4), (8, 11, 6), (8, 10, 8), (8, 1, 3),
+            # Jornada 9
+            (9, 8, 11), (9, 2, 10), (9, 6, 9), (9, 3, 7), (9, 4, 1),
+            # Jornada 10
+            (10, 11, 2), (10, 7, 4), (10, 1, 6), (10, 9, 8), (10, 5, 3),
+            # Jornada 11
+            (11, 4, 5), (11, 10, 11), (11, 2, 9), (11, 6, 7), (11, 8, 1)
+        ]
     },
     "SÉRIE D": {
         "equipas": {
@@ -57,7 +125,29 @@ DADOS_INICIAIS = {
             9: "Gd Sourense \"B\"", 10: "Ud Tocha",
             11: "Cd Porto - Coimbra", 12: "Acr Seixo Mira"
         },
-        "jogos_j1": [(1,2,1,0), (3,4,0,1), (5,6,1,0), (7,8,0,0), (9,10,0,1), (11,12,1,0)]
+        "jogos_j1": [(1,2,1,0), (3,4,0,1), (5,6,1,0), (7,8,0,0), (9,10,0,1), (11,12,1,0)],
+        "jogos_sem_resultado": [
+            # Jornada 2
+            (2, 2, 5), (2, 8, 3), (2, 6, 9), (2, 10, 11), (2, 12, 7), (2, 4, 1),
+            # Jornada 3
+            (3, 3, 12), (3, 9, 2), (3, 1, 5), (3, 7, 10), (3, 11, 6), (3, 4, 8),
+            # Jornada 4
+            (4, 10, 3), (4, 5, 9), (4, 12, 4), (4, 8, 1), (4, 2, 11), (4, 6, 7),
+            # Jornada 5
+            (5, 8, 12), (5, 1, 9), (5, 7, 2), (5, 11, 5), (5, 4, 10), (5, 3, 6),
+            # Jornada 6
+            (6, 2, 3), (6, 6, 4), (6, 12, 1), (6, 9, 11), (6, 5, 7), (6, 10, 8),
+            # Jornada 7
+            (7, 7, 9), (7, 4, 2), (7, 3, 5), (7, 12, 10), (7, 1, 11), (7, 8, 6),
+            # Jornada 8
+            (8, 9, 3), (8, 6, 12), (8, 5, 4), (8, 10, 1), (8, 11, 7), (8, 2, 8),
+            # Jornada 9
+            (9, 4, 9), (9, 12, 2), (9, 8, 5), (9, 3, 11), (9, 10, 6), (9, 1, 7),
+            # Jornada 10
+            (10, 7, 3), (10, 5, 12), (10, 11, 4), (10, 2, 10), (10, 1, 6), (10, 9, 8),
+            # Jornada 11
+            (11, 12, 9), (11, 6, 2), (11, 10, 5), (11, 3, 1), (11, 8, 11), (11, 4, 7)
+        ]
     }
 }
 
@@ -65,19 +155,37 @@ def criar_campeonato_inicial():
     g = GestorCampeonato()
     for nome_s, info in DADOS_INICIAIS.items():
         s = Serie(nome_s)
+        
+        # Regista Equipas
         for num, eq in info["equipas"].items():
             s.adicionar_equipa(num, eq)
+            
+        # Regista Jogos da Jornada 1 com resultados
         for c, f, gc, gf in info["jogos_j1"]:
             j = s.adicionar_jogo(1, c, f)
             j.definir_resultado(gc, gf)
+            
+        # Regista Jogos da Jornada 2 à 11 por jogar
+        for j_num, c, f in info["jogos_sem_resultado"]:
+            s.adicionar_jogo(j_num, c, f)
+            
         g.series[nome_s] = s
     gestor_dados.guardar_dados(g)
     return g
 
-# Carregamento seguro na memória de sessão
-if "campeonato" not in st.session_state:
-    dados = gestor_dados.carregar_dados()
+def precisa_reinstalar(dados):
     if dados is None or not dados.series or len(dados.series) < 4:
+        return True
+    for s in dados.series.values():
+        jornadas = set(j.jornada for j in s.jogos)
+        if max(jornadas, default=0) < 11:
+            return True
+    return False
+
+# Carregamento seguro na memória de sessão
+if "campeonato" not in st.session_state or precisa_reinstalar(st.session_state.get("campeonato")):
+    dados = gestor_dados.carregar_dados()
+    if precisa_reinstalar(dados):
         st.session_state["campeonato"] = criar_campeonato_inicial()
     else:
         st.session_state["campeonato"] = dados
@@ -106,9 +214,9 @@ with tab_fase1:
     serie_sel = st.selectbox("Selecionar Série", series_nomes)
     s_obj = campeonato.series[serie_sel]
 
-    # Painel exclusivo de Administrador
+    # Painel exclusivo de Administrador: Agendar e Alterar/Eliminar Jogos
     if e_admin:
-        with st.expander("🛠️ ÁREA ADMIN: Guia de Números & Criar Jogos", expanded=True):
+        with st.expander("🛠️ ÁREA ADMIN: Gestão de Jogos & Guia de Equipas", expanded=False):
             col_a, col_b = st.columns([1, 1])
             with col_a:
                 st.write(f"**Equipas da {serie_sel}:**")
@@ -116,19 +224,60 @@ with tab_fase1:
                     st.text(f"Nº {num}: {eq.nome}")
             
             with col_b:
-                st.write("**Agendar Novo Jogo:**")
-                num_casa = st.number_input("Nº Equipa Casa", min_value=1, max_value=20, value=1, key="ncasa")
-                num_fora = st.number_input("Nº Equipa Fora", min_value=1, max_value=20, value=2, key="nfora")
-                jornada_in = st.number_input("Jornada", min_value=1, max_value=30, value=2, key="jornada_in")
+                tab_add, tab_edit = st.tabs(["➕ Adicionar Jogo", "✏️ Alterar / Eliminar Jogo"])
                 
-                if st.button("Agendar Jogo"):
-                    if num_casa in s_obj.equipas and num_fora in s_obj.equipas:
-                        s_obj.adicionar_jogo(int(jornada_in), int(num_casa), int(num_fora))
-                        gestor_dados.guardar_dados(campeonato)
-                        st.success(f"Jogo da Jornada {jornada_in} agendado!")
-                        st.rerun()
+                with tab_add:
+                    num_casa = st.number_input("Nº Equipa Casa", min_value=1, max_value=20, value=1, key="ncasa")
+                    num_fora = st.number_input("Nº Equipa Fora", min_value=1, max_value=20, value=2, key="nfora")
+                    jornada_in = st.number_input("Jornada", min_value=1, max_value=30, value=12, key="jornada_in")
+                    
+                    if st.button("Agendar Jogo"):
+                        if num_casa in s_obj.equipas and num_fora in s_obj.equipas:
+                            s_obj.adicionar_jogo(int(jornada_in), int(num_casa), int(num_fora))
+                            gestor_dados.guardar_dados(campeonato)
+                            st.success(f"Jogo da Jornada {jornada_in} agendado!")
+                            st.rerun()
+                        else:
+                            st.error("Número de equipa inválido para esta série.")
+                            
+                with tab_edit:
+                    if not s_obj.jogos:
+                        st.info("Não existem jogos para editar nesta série.")
                     else:
-                        st.error("Número de equipa inválido para esta série.")
+                        opcoes_jogos = {
+                            f"J{j.jornada}: {s_obj.equipas.get(j.equipa_casa, Jogo(0,0,0)).nome} vs {s_obj.equipas.get(j.equipa_fora, Jogo(0,0,0)).nome}": idx
+                            for idx, j in enumerate(s_obj.jogos)
+                        }
+                        jogo_sel_label = st.selectbox("Escolher Jogo a Alterar", list(opcoes_jogos.keys()))
+                        jogo_idx = opcoes_jogos[jogo_sel_label]
+                        jogo_alvo = s_obj.jogos[jogo_idx]
+                        
+                        nova_jornada = st.number_input("Nova Jornada", min_value=1, max_value=30, value=int(jogo_alvo.jornada), key="edit_jornada")
+                        
+                        equipas_dict = {f"Nº {num}: {eq.nome}": num for num, eq in sorted(s_obj.equipas.items())}
+                        labels_equipas = list(equipas_dict.keys())
+                        
+                        idx_c_default = list(s_obj.equipas.keys()).index(jogo_alvo.equipa_casa) if jogo_alvo.equipa_casa in s_obj.equipas else 0
+                        idx_f_default = list(s_obj.equipas.keys()).index(jogo_alvo.equipa_fora) if jogo_alvo.equipa_fora in s_obj.equipas else 0
+                        
+                        nova_casa_label = st.selectbox("Nova Equipa Casa", labels_equipas, index=idx_c_default, key="edit_casa")
+                        nova_fora_label = st.selectbox("Nova Equipa Fora", labels_equipas, index=idx_f_default, key="edit_fora")
+                        
+                        col_bt1, col_bt2 = st.columns([1, 1])
+                        with col_bt1:
+                            if st.button("Guardar Alterações do Jogo"):
+                                jogo_alvo.jornada = int(nova_jornada)
+                                jogo_alvo.equipa_casa = equipas_dict[nova_casa_label]
+                                jogo_alvo.equipa_fora = equipas_dict[nova_fora_label]
+                                gestor_dados.guardar_dados(campeonato)
+                                st.success("Jogo alterado com sucesso!")
+                                st.rerun()
+                        with col_bt2:
+                            if st.button("🗑️ Eliminar Jogo"):
+                                s_obj.jogos.pop(jogo_idx)
+                                gestor_dados.guardar_dados(campeonato)
+                                st.success("Jogo eliminado!")
+                                st.rerun()
 
     # Visualização e Lançamento de Resultados
     col1, col2 = st.columns([1, 1])
