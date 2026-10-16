@@ -12,11 +12,84 @@ from src.gestor_dados import GestorDados
 # Configuração da página
 st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
 
-# Inicialização segura do Gestor de Dados
+# Inicialização do Gestor de Dados
 gestor_dados = GestorDados()
 st.session_state["gestor_dados"] = gestor_dados
 
-# Estutura inicial com as 4 Séries, 44 Equipas e Jornada 1
+# --- FUNÇÕES AUXILIARES DE SEGURANÇA (Detetam atributos dinamicamente) ---
+
+def obter_jogos_serie(s):
+    """Obtém a lista de jogos de uma Serie de forma segura."""
+    # 1. Procura atributos conhecidos
+    for attr in ["jogos", "lista_jogos", "jogos_lista", "calendario", "partidas"]:
+        if hasattr(s, attr):
+            val = getattr(s, attr)
+            if isinstance(val, list):
+                return val
+            elif isinstance(val, dict):
+                return list(val.values())
+    
+    # 2. Se não encontrou, procura qualquer lista no objeto (exceto equipas)
+    for k, v in getattr(s, "__dict__", {}).items():
+        if k != "equipas":
+            if isinstance(v, list):
+                return v
+            elif isinstance(v, dict):
+                return list(v.values())
+                
+    # 3. Se nada existir, cria o atributo 'jogos'
+    s.jogos = []
+    return s.jogos
+
+def obter_ids_equipas(jogo):
+    """Obtém os IDs das equipas da casa e fora de um jogo."""
+    c = getattr(jogo, "equipa_casa", getattr(jogo, "id_casa", getattr(jogo, "casa", None)))
+    f = getattr(jogo, "equipa_fora", getattr(jogo, "id_fora", getattr(jogo, "fora", None)))
+    return c, f
+
+def obter_jornada(jogo):
+    """Obtém a jornada do jogo."""
+    return getattr(jogo, "jornada", 1)
+
+def obter_resultado_str(jogo):
+    """Retorna o resultado em texto ('1 - 0', '0 - 0', '0 - 1' ou 'Por jogar')."""
+    realizado = getattr(jogo, "realizado", getattr(jogo, "concluido", False))
+    if realizado:
+        gc = getattr(jogo, "golo_casa", getattr(jogo, "golos_casa", 0))
+        gf = getattr(jogo, "golo_fora", getattr(jogo, "golos_fora", 0))
+        return f"{gc} - {gf}"
+    return "Por jogar"
+
+def definir_resultado_jogo(jogo, gc, gf):
+    """Define o resultado no objeto Jogo."""
+    if hasattr(jogo, "definir_resultado") and callable(getattr(jogo, "definir_resultado")):
+        try:
+            jogo.definir_resultado(gc, gf)
+            return
+        except Exception:
+            pass
+            
+    # Se não houver método, atribui diretamente nos atributos
+    if hasattr(jogo, "golo_casa"): jogo.golo_casa = gc
+    elif hasattr(jogo, "golos_casa"): jogo.golos_casa = gc
+    
+    if hasattr(jogo, "golo_fora"): jogo.golo_fora = gf
+    elif hasattr(jogo, "golos_fora"): jogo.golos_fora = gf
+    
+    if hasattr(jogo, "realizado"): jogo.realizado = True
+    elif hasattr(jogo, "concluido"): jogo.concluido = True
+
+def limpar_resultado_jogo(jogo):
+    """Marca o jogo como 'Por jogar'."""
+    if hasattr(jogo, "realizado"): jogo.realizado = False
+    elif hasattr(jogo, "concluido"): jogo.concluido = False
+    
+    if hasattr(jogo, "golo_casa"): jogo.golo_casa = 0
+    if hasattr(jogo, "golo_fora"): jogo.golo_fora = 0
+
+
+# --- DADOS PRÉ-CARREGADOS DAS 4 SÉRIES ---
+
 DADOS_INICIAIS = {
     "SÉRIE A": {
         "equipas": {
@@ -64,39 +137,43 @@ DADOS_INICIAIS = {
 
 def inicializar_campeonato():
     g = GestorCampeonato()
-    g.series = {}
+    dict_series = getattr(g, "series", getattr(g, "fase1_series", {}))
+    if not dict_series:
+        g.series = {}
+        dict_series = g.series
+        
     for nome_s, info in DADOS_INICIAIS.items():
         s = Serie(nome_s)
         for num, eq in info["equipas"].items():
             s.adicionar_equipa(num, eq)
         
         for c, f, gc, gf in info["jogos_j1"]:
-            # Adiciona o jogo através da classe Serie (jornada, casa, fora)
             s.adicionar_jogo(1, c, f)
-            if s.jogos:
-                j = s.jogos[-1]
-                j.golo_casa = gc
-                j.golo_fora = gf
-                j.realizado = True
+            lista_j = obter_jogos_serie(s)
+            if lista_j:
+                definir_resultado_jogo(lista_j[-1], gc, gf)
                 
-        g.series[nome_s] = s
+        dict_series[nome_s] = s
     
     gestor_dados.guardar_dados(g)
     return g
 
-# Garante o carregamento ou recriação do campeonato com as 4 Séries
+# Carregamento seguro
 g_existente = None
 try:
     g_existente = gestor_dados.carregar_dados()
 except Exception:
     g_existente = None
 
-if g_existente is None or not getattr(g_existente, "series", {}) or len(g_existente.series) < 4:
+dict_series_exist = getattr(g_existente, "series", getattr(g_existente, "fase1_series", {})) if g_existente else {}
+
+if g_existente is None or not dict_series_exist or len(dict_series_exist) < 4:
     st.session_state["campeonato"] = inicializar_campeonato()
 else:
     st.session_state["campeonato"] = g_existente
 
 gestor = st.session_state["campeonato"]
+dict_series_ativas = getattr(gestor, "series", getattr(gestor, "fase1_series", {}))
 
 st.title("⚽ Troféu Distrital Coimbra - Sub11")
 
@@ -116,9 +193,9 @@ tab_fase1, tab_fase2 = st.tabs(["Primeira Fase", "Segunda Fase"])
 with tab_fase1:
     st.header("Primeira Fase")
     
-    series_list = list(gestor.series.keys())
+    series_list = list(dict_series_ativas.keys())
     serie_ativa = st.selectbox("Selecionar Série", series_list)
-    s_ativa = gestor.series[serie_ativa]
+    s_ativa = dict_series_ativas[serie_ativa]
 
     # Painel do Admin para consultar números e agendar jogos
     if e_admin:
@@ -127,7 +204,8 @@ with tab_fase1:
             with col_a:
                 st.write(f"**Equipas Registadas na {serie_ativa}:**")
                 for num, eq in sorted(s_ativa.equipas.items()):
-                    st.text(f"Nº {num}: {eq.nome}")
+                    nome_eq = getattr(eq, "nome", str(eq))
+                    st.text(f"Nº {num}: {nome_eq}")
             
             with col_b:
                 st.write("**Agendar Novo Jogo:**")
@@ -150,24 +228,27 @@ with tab_fase1:
     with col1:
         st.subheader("🗓️ Jogos & Resultados")
         
-        jornadas_existentes = sorted(list(set(j.jornada for j in s_ativa.jogos))) if s_ativa.jogos else []
+        lista_jogos_s = obter_jogos_serie(s_ativa)
+        jornadas_existentes = sorted(list(set(obter_jornada(j) for j in lista_jogos_s))) if lista_jogos_s else []
         jornada_sel = st.selectbox("Filtrar por Jornada", jornadas_existentes) if jornadas_existentes else None
 
-        jogos_filtrados = [j for j in s_ativa.jogos if j.jornada == jornada_sel] if jornada_sel else s_ativa.jogos
+        jogos_filtrados = [j for j in lista_jogos_s if obter_jornada(j) == jornada_sel] if jornada_sel else lista_jogos_s
 
         if not jogos_filtrados:
             st.info("Nenhum jogo registado.")
         else:
             for idx, jogo in enumerate(jogos_filtrados):
-                eq_c = s_ativa.equipas.get(jogo.equipa_casa)
-                eq_f = s_ativa.equipas.get(jogo.equipa_fora)
+                c_id, f_id = obter_ids_equipas(jogo)
+                eq_c = s_ativa.equipas.get(c_id)
+                eq_f = s_ativa.equipas.get(f_id)
                 
-                nome_c = eq_c.nome if eq_c else f"Equipa {jogo.equipa_casa}"
-                nome_f = eq_f.nome if eq_f else f"Equipa {jogo.equipa_fora}"
+                nome_c = getattr(eq_c, "nome", f"Equipa {c_id}") if eq_c else f"Equipa {c_id}"
+                nome_f = getattr(eq_f, "nome", f"Equipa {f_id}") if eq_f else f"Equipa {f_id}"
+                j_num = obter_jornada(jogo)
                 
-                st.write(f"**Jornada {jogo.jornada}:** {nome_c} vs {nome_f}")
+                st.write(f"**Jornada {j_num}:** {nome_c} vs {nome_f}")
                 
-                res_atual = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
+                res_atual = obter_resultado_str(jogo)
                 opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1"]
                 idx_default = opcoes_res.index(res_atual) if res_atual in opcoes_res else 0
                 
@@ -175,19 +256,15 @@ with tab_fase1:
                     f"Resultado Jogo {idx+1}",
                     opcoes_res,
                     index=idx_default,
-                    key=f"res_{serie_ativa}_{jogo.jornada}_{idx}"
+                    key=f"res_{serie_ativa}_{j_num}_{idx}"
                 )
                 
-                if st.button(f"Guardar Resultado (Jogo {idx+1})", key=f"btn_{serie_ativa}_{jogo.jornada}_{idx}"):
+                if st.button(f"Guardar Resultado (Jogo {idx+1})", key=f"btn_{serie_ativa}_{j_num}_{idx}"):
                     if novo_res == "Por jogar":
-                        jogo.realizado = False
-                        jogo.golo_casa = 0
-                        jogo.golo_fora = 0
+                        limpar_resultado_jogo(jogo)
                     else:
                         gc, gf = map(int, novo_res.split(" - "))
-                        jogo.golo_casa = gc
-                        jogo.golo_fora = gf
-                        jogo.realizado = True
+                        definir_resultado_jogo(jogo, gc, gf)
                     
                     gestor_dados.guardar_dados(gestor)
                     st.success("Resultado atualizado!")
