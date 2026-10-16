@@ -20,13 +20,24 @@ st.session_state["gestor_dados"] = gestor_dados
 if "campeonato" not in st.session_state or st.session_state["campeonato"] is None:
     try:
         dados_carregados = gestor_dados.carregar_dados()
-    except AttributeError:
-        # Caso o método na classe tenha outro nome no gestor_dados.py
+    except Exception:
         dados_carregados = None
     
     st.session_state["campeonato"] = dados_carregados if dados_carregados is not None else GestorCampeonato()
 
 gestor = st.session_state["campeonato"]
+
+# Garante compatibilidade caso a propriedade no modelo se chame 'series' ou 'fase1_series'
+def obter_series_dict(g):
+    if hasattr(g, "fase1_series"):
+        return g.fase1_series
+    elif hasattr(g, "series"):
+        return g.series
+    else:
+        g.series = {}
+        return g.series
+
+dict_series = obter_series_dict(gestor)
 
 st.title("⚽ Troféu Distrital Coimbra - Sub11")
 
@@ -52,18 +63,18 @@ with tab_fase1:
             st.subheader("Criar / Selecionar Série")
             nome_nova_serie = st.text_input("Nome da nova Série (ex: Série A)")
             if st.button("Criar Série"):
-                if nome_nova_serie and nome_nova_serie not in gestor.fase1_series:
-                    gestor.fase1_series[nome_nova_serie] = Serie(nome_nova_serie)
+                if nome_nova_serie and nome_nova_serie not in dict_series:
+                    dict_series[nome_nova_serie] = Serie(nome_nova_serie)
                     gestor_dados.guardar_dados(gestor)
                     st.success(f"Série {nome_nova_serie} criada!")
                     st.rerun()
 
             st.divider()
             
-            series_existentes = list(gestor.fase1_series.keys())
+            series_existentes = list(dict_series.keys())
             if series_existentes:
                 serie_sel_admin = st.selectbox("Escolher Série para adicionar equipas", series_existentes, key="admin_serie")
-                s_obj = gestor.fase1_series[serie_sel_admin]
+                s_obj = dict_series[serie_sel_admin]
                 
                 num_equipa = st.number_input("Número da Equipa", min_value=1, max_value=20, value=1)
                 nome_equipa = st.text_input("Nome da Equipa")
@@ -80,12 +91,12 @@ with tab_fase1:
                     st.text(f"Nº {num}: {eq.nome}")
 
     # Visualização e Lançamento de Jogos/Classificação (Público & Admin)
-    series_list = list(gestor.fase1_series.keys())
+    series_list = list(dict_series.keys())
     if not series_list:
         st.warning("Ainda não existem séries criadas.")
     else:
         serie_ativa = st.selectbox("Selecionar Série", series_list)
-        s_ativa = gestor.fase1_series[serie_ativa]
+        s_ativa = dict_series[serie_ativa]
         
         col1, col2 = st.columns([1, 1])
         
