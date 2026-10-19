@@ -175,13 +175,22 @@ if not hasattr(campeonato, "jogadores_extra_lousanense"):
 
 st.title("⚽ Troféu Distrital Coimbra - Sub11")
 
-# Sidebar - Painel de Acesso Admin
+# Sidebar - Painel de Acesso Admin com opção de Logout
 st.sidebar.header("⚙️ Definições & Acesso")
-senha_admin = st.sidebar.text_input("Palavra-passe Admin", type="password")
-e_admin = (senha_admin == "lsasub11")
+
+pass_correta = st.secrets.get("ADMIN_PASSWORD", "admin123")
+
+if "senha_input" not in st.session_state:
+    st.session_state["senha_input"] = ""
+
+senha_admin = st.sidebar.text_input("Palavra-passe Admin", type="password", key="senha_input")
+e_admin = (senha_admin == pass_correta)
 
 if e_admin:
     st.sidebar.success("Modo Admin Ativo")
+    if st.sidebar.button("🔒 Sair do Modo Admin"):
+        st.session_state["senha_input"] = ""
+        st.rerun()
 else:
     st.sidebar.info("Modo Visitante (Consulta de resultados)")
 
@@ -369,10 +378,8 @@ with tab_fase1:
 with tab_lousanense:
     st.header("🔴⚪ CD Lousanense - Estatísticas de Jogadores & Resultados Reais")
 
-    # Unifica o Plantel Base com os Jogadores Extra adicionados
     plantel_completo = PLANTEL_LOUSANENSE_BASE + getattr(campeonato, "jogadores_extra_lousanense", [])
 
-    # PAINEL ADMIN: GESTÃO DO PLANTEL EXTRA
     if e_admin:
         with st.expander("👥 ÁREA ADMIN: Adicionar / Remover Jogadores Extra ao Plantel", expanded=False):
             col_ex1, col_ex2 = st.columns([1, 1])
@@ -420,7 +427,6 @@ with tab_lousanense:
                         st.success(f"Jogador '{atleta_remover}' removido do plantel!")
                         st.rerun()
 
-    # Obter os jogos do Cd Lousanense na Série A (Lousanense é ID 1)
     serie_a = campeonato.series.get("SÉRIE A")
     jogos_lousanense = []
     if serie_a:
@@ -438,10 +444,8 @@ with tab_lousanense:
     with col_stats:
         st.subheader("📊 Tabela de Jogadores")
 
-        # Inicializa a contagem dos atletas (incluindo os extra)
         stats_jogadores = {p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0} for p in plantel_completo}
 
-        # Agrega presenças, golos e assistências de todas as fichas guardadas
         for j_str, ficha in campeonato.fichas_lousanense.items():
             for jog in ficha.get("convocados", []):
                 if jog in stats_jogadores:
@@ -506,9 +510,8 @@ with tab_lousanense:
                 for j_num, c_nome, f_nome, e_casa in jogos_lousanense
             }
 
-            col_sel1, _ = st.columns([1, 1])
-            with col_sel1:
-                sel_jogo_label = st.selectbox("Selecionar Jogo", list(opcoes_j_lous.keys()))
+            # Caixa de seleção expandida para largura total
+            sel_jogo_label = st.selectbox("Selecionar Jogo", list(opcoes_j_lous.keys()))
 
             j_num_sel, c_nome_sel, f_nome_sel, e_casa_sel = opcoes_j_lous[sel_jogo_label]
             j_str_key = str(j_num_sel)
