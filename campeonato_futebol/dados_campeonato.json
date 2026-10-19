@@ -1,0 +1,2154 @@
+{
+    "series": {
+        "SÉRIE A": {
+            "nome": "SÉRIE A",
+            "equipas": {
+                "1": {
+                    "id_num": 1,
+                    "nome": "Cd Lousanense"
+                },
+                "2": {
+                    "id_num": 2,
+                    "nome": "Fc Oliveira Hospital"
+                },
+                "3": {
+                    "id_num": 3,
+                    "nome": "Red School"
+                },
+                "4": {
+                    "id_num": 4,
+                    "nome": "Cdr Penelense"
+                },
+                "5": {
+                    "id_num": 5,
+                    "nome": "Cdr Vasco Gama"
+                },
+                "6": {
+                    "id_num": 6,
+                    "nome": "Gd Pampilhosense"
+                },
+                "7": {
+                    "id_num": 7,
+                    "nome": "Red Eagle"
+                },
+                "8": {
+                    "id_num": 8,
+                    "nome": "União 1919"
+                },
+                "9": {
+                    "id_num": 9,
+                    "nome": "Co Jardim Alva"
+                },
+                "10": {
+                    "id_num": 10,
+                    "nome": "Mocidade Fc"
+                },
+                "11": {
+                    "id_num": 11,
+                    "nome": "Gd Tourizense"
+                },
+                "12": {
+                    "id_num": 12,
+                    "nome": "Ca Gândaras"
+                }
+            },
+            "jogos": [
+                {
+                    "jornada": 1,
+                    "equipa_casa": 1,
+                    "equipa_fora": 2,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 3,
+                    "equipa_fora": 4,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 5,
+                    "equipa_fora": 6,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 7,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 9,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 11,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 4,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 12,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 6,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 8,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 10,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 2,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 1,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 7,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 9,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 2,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 3,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 5,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 8,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 11,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 4,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 10,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 6,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 12,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 7,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 6,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 9,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 1,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 5,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 2,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 3,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 8,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 12,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 10,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 4,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 11,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 7,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 5,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 1,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 6,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 2,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 10,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 12,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 3,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 11,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 4,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 8,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 9,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 1,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 2,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 6,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 4,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 10,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 7,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 11,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 5,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 7,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 9,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 3,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 8,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 6,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 10,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 4,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 1,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 12,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 2,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                }
+            ]
+        },
+        "SÉRIE B": {
+            "nome": "SÉRIE B",
+            "equipas": {
+                "1": {
+                    "id_num": 1,
+                    "nome": "Sanjoanense Ac"
+                },
+                "2": {
+                    "id_num": 2,
+                    "nome": "Adc Adémia"
+                },
+                "3": {
+                    "id_num": 3,
+                    "nome": "Cd Assafarge"
+                },
+                "4": {
+                    "id_num": 4,
+                    "nome": "Gr Vigor Mocidade"
+                },
+                "5": {
+                    "id_num": 5,
+                    "nome": "Uc Eirense"
+                },
+                "6": {
+                    "id_num": 6,
+                    "nome": "Ad Souselas"
+                },
+                "7": {
+                    "id_num": 7,
+                    "nome": "Académica Coimbra/Oaf"
+                },
+                "8": {
+                    "id_num": 8,
+                    "nome": "A. D. Briosa Talent"
+                },
+                "9": {
+                    "id_num": 9,
+                    "nome": "Académica Coimbra/Sf"
+                },
+                "10": {
+                    "id_num": 10,
+                    "nome": "Esperança Ac"
+                },
+                "11": {
+                    "id_num": 11,
+                    "nome": "Af N10"
+                }
+            },
+            "jogos": [
+                {
+                    "jornada": 1,
+                    "equipa_casa": 1,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 3,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 5,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 7,
+                    "equipa_fora": 8,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 9,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 11,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 10,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 2,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 8,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 6,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 9,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 1,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 7,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 3,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 4,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 5,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 8,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 2,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 11,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 6,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 4,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 9,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 7,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 3,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 10,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 6,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 11,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 1,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 5,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 2,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 8,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 9,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 4,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 3,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 10,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 5,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 6,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 1,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 7,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 11,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 4,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 8,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 10,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 2,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 3,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 11,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 7,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 5,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 9,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 1,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 8,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 6,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 2,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 10,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 4,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                }
+            ]
+        },
+        "SÉRIE C": {
+            "nome": "SÉRIE C",
+            "equipas": {
+                "1": {
+                    "id_num": 1,
+                    "nome": "Academia \"Os Marialvas\""
+                },
+                "2": {
+                    "id_num": 2,
+                    "nome": "Núcleo Sporting Ançã"
+                },
+                "3": {
+                    "id_num": 3,
+                    "nome": "Cl. Condeixa"
+                },
+                "4": {
+                    "id_num": 4,
+                    "nome": "Ar Casaense"
+                },
+                "5": {
+                    "id_num": 5,
+                    "nome": "Cd Carapinheirense"
+                },
+                "6": {
+                    "id_num": 6,
+                    "nome": "Ançã Fc"
+                },
+                "7": {
+                    "id_num": 7,
+                    "nome": "Fc São Silvestre"
+                },
+                "8": {
+                    "id_num": 8,
+                    "nome": "Gd Sepins"
+                },
+                "9": {
+                    "id_num": 9,
+                    "nome": "Sc Ribeirense"
+                },
+                "10": {
+                    "id_num": 10,
+                    "nome": "Gd Sourense \"A\""
+                },
+                "11": {
+                    "id_num": 11,
+                    "nome": "Sc Povoense"
+                }
+            },
+            "jogos": [
+                {
+                    "jornada": 1,
+                    "equipa_casa": 1,
+                    "equipa_fora": 2,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 3,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 5,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 7,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 9,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 6,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 11,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 8,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 10,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 2,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 1,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 5,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 7,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 4,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 3,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 10,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 11,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 9,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 8,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 2,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 5,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 4,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 3,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 7,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 6,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 9,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 1,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 10,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 2,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 11,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 4,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 8,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 6,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 3,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 5,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 7,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 9,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 11,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 10,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 1,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 8,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 2,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 6,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 3,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 4,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 11,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 7,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 1,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 9,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 5,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 4,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 10,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 2,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 6,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 8,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                }
+            ]
+        },
+        "SÉRIE D": {
+            "nome": "SÉRIE D",
+            "equipas": {
+                "1": {
+                    "id_num": 1,
+                    "nome": "Ac Montemorense"
+                },
+                "2": {
+                    "id_num": 2,
+                    "nome": "Gd Maiorca"
+                },
+                "3": {
+                    "id_num": 3,
+                    "nome": "Gd Os Águias"
+                },
+                "4": {
+                    "id_num": 4,
+                    "nome": "Gc Figueirense"
+                },
+                "5": {
+                    "id_num": 5,
+                    "nome": "A. Naval 1893"
+                },
+                "6": {
+                    "id_num": 6,
+                    "nome": "Cr Praia Leirosa"
+                },
+                "7": {
+                    "id_num": 7,
+                    "nome": "Gd Pm - Touring 1970"
+                },
+                "8": {
+                    "id_num": 8,
+                    "nome": "Acds Vinha Rainha"
+                },
+                "9": {
+                    "id_num": 9,
+                    "nome": "Gd Sourense \"B\""
+                },
+                "10": {
+                    "id_num": 10,
+                    "nome": "Ud Tocha"
+                },
+                "11": {
+                    "id_num": 11,
+                    "nome": "Cd Porto - Coimbra"
+                },
+                "12": {
+                    "id_num": 12,
+                    "nome": "Acr Seixo Mira"
+                }
+            },
+            "jogos": [
+                {
+                    "jornada": 1,
+                    "equipa_casa": 1,
+                    "equipa_fora": 2,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 3,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 5,
+                    "equipa_fora": 6,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 7,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 9,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 1,
+                    "realizado": true
+                },
+                {
+                    "jornada": 1,
+                    "equipa_casa": 11,
+                    "equipa_fora": 12,
+                    "golo_casa": 1,
+                    "golo_fora": 0,
+                    "realizado": true
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 2,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 8,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 6,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 10,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 12,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 2,
+                    "equipa_casa": 4,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 3,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 9,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 1,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 7,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 11,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 3,
+                    "equipa_casa": 4,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 10,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 5,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 12,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 8,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 2,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 4,
+                    "equipa_casa": 6,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 8,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 1,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 7,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 11,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 4,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 5,
+                    "equipa_casa": 3,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 2,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 6,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 12,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 9,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 5,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 6,
+                    "equipa_casa": 10,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 7,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 4,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 3,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 12,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 1,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 7,
+                    "equipa_casa": 8,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 9,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 6,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 5,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 10,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 11,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 8,
+                    "equipa_casa": 2,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 4,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 12,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 8,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 3,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 10,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 9,
+                    "equipa_casa": 1,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 7,
+                    "equipa_fora": 3,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 5,
+                    "equipa_fora": 12,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 11,
+                    "equipa_fora": 4,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 2,
+                    "equipa_fora": 10,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 1,
+                    "equipa_fora": 6,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 10,
+                    "equipa_casa": 9,
+                    "equipa_fora": 8,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 12,
+                    "equipa_fora": 9,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 6,
+                    "equipa_fora": 2,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 10,
+                    "equipa_fora": 5,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 3,
+                    "equipa_fora": 1,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 8,
+                    "equipa_fora": 11,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                },
+                {
+                    "jornada": 11,
+                    "equipa_casa": 4,
+                    "equipa_fora": 7,
+                    "golo_casa": 0,
+                    "golo_fora": 0,
+                    "realizado": false
+                }
+            ]
+        }
+    },
+    "fichas_lousanense": {},
+    "jogadores_extra_lousanense": []
+}
