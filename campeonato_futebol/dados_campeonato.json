@@ -2149,6 +2149,44 @@
             ]
         }
     },
-    "fichas_lousanense": {},
+    "fichas_lousanense": {
+        "1": {
+            "jornada": 1,
+            "golos_marcados": 4,
+            "golos_sofridos": 3,
+            "convocados": [
+                "Vitória Madeira",
+                "Vasco Santos",
+                "Ricardo Rosa",
+                "Gonçalo Paiva",
+                "Tomás Vaz",
+                "Simão Rodrigues",
+                "Lourenço Santos",
+                "Gonçalo Ferreira",
+                "Gonçalo Barata",
+                "Isaac Fonseca",
+                "Elias Soares",
+                "Maria Nunes"
+            ],
+            "detalhes": [
+                {
+                    "autor": "Simão Rodrigues",
+                    "assistencia": "Tomás Vaz"
+                },
+                {
+                    "autor": "Lourenço Santos",
+                    "assistencia": "Simão Rodrigues"
+                },
+                {
+                    "autor": "Isaac Fonseca",
+                    "assistencia": "Gonçalo Paiva"
+                },
+                {
+                    "autor": "Gonçalo Ferreira",
+                    "assistencia": "Isaac Fonseca"
+                }
+            ]
+        }
+    },
     "jogadores_extra_lousanense": []
 }
