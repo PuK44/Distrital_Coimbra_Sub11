@@ -438,9 +438,15 @@ with tab_lousanense:
                 nome_f = eq_fora.nome if eq_fora else f"Equipa {j.equipa_fora}"
                 jogos_lousanense.append((j.jornada, nome_c, nome_f, j.equipa_casa == 1))
 
+    # Obter seleção de jogo primeiro para podermos desenhar a ficha/resumo abaixo da tabela
+    opcoes_j_lous = {
+        f"Jornada {j_num}: {c_nome} vs {f_nome}": (j_num, c_nome, f_nome, e_casa)
+        for j_num, c_nome, f_nome, e_casa in jogos_lousanense
+    } if jogos_lousanense else {}
+
     col_stats, col_espaco_l, col_ficha = st.columns([1.25, 0.1, 0.95])
 
-    # --- COLUNA DA ESQUERDA: TABELA DE JOGADORES ---
+    # --- COLUNA DA ESQUERDA: TABELA DE JOGADORES + RESUMO DE JOGO DEBAIXO ---
     with col_stats:
         st.subheader("📊 Tabela de Jogadores")
 
@@ -498,27 +504,70 @@ with tab_lousanense:
             }
         )
 
-    # --- COLUNA DA DIREITA: FICHA DE JOGO / RESULTADO REAL ---
+        # RESUMO DO JOGO MOVIDO PARA DEBAIXO DA TABELA DE JOGADORES
+        if opcoes_j_lous:
+            if "sel_jogo_key" in st.session_state and st.session_state["sel_jogo_key"] in opcoes_j_lous:
+                j_num_sel, c_nome_sel, f_nome_sel, e_casa_sel = opcoes_j_lous[st.session_state["sel_jogo_key"]]
+            else:
+                primeiro_label = list(opcoes_j_lous.keys())[0]
+                j_num_sel, c_nome_sel, f_nome_sel, e_casa_sel = opcoes_j_lous[primeiro_label]
+
+            j_str_key = str(j_num_sel)
+            ficha_atual = campeonato.fichas_lousanense.get(j_str_key, {})
+
+            if ficha_atual:
+                st.markdown("---")
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color: #1e293b;
+                        color: #ffffff;
+                        padding: 12px 16px;
+                        border-radius: 8px;
+                        border-left: 5px solid #00d47e;
+                        margin-bottom: 12px;
+                        font-size: 16px;
+                        font-weight: 600;
+                    ">
+                        🔴⚪ Resultado Real (Jornada {j_num_sel}):<br>
+                        <span style="color: #00d47e; font-size: 20px;">
+                            {c_nome_sel} {ficha_atual['golos_marcados'] if e_casa_sel else ficha_atual['golos_sofridos']} - {ficha_atual['golos_sofridos'] if e_casa_sel else ficha_atual['golos_marcados']} {f_nome_sel}
+                        </span>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                conv_gravados = ficha_atual.get("convocados", [])
+                if conv_gravados:
+                    st.write(f"**👕 Jogadores Utilizados ({len(conv_gravados)}):**")
+                    st.text(", ".join(conv_gravados))
+
+                detalhes_gravados = ficha_atual.get("detalhes", [])
+                if detalhes_gravados:
+                    st.write("**Resumo dos Golos do CD Lousanense:**")
+                    for idx_g, g_info in enumerate(detalhes_gravados):
+                        aut = g_info.get("autor")
+                        ass = g_info.get("assistencia")
+                        txt_ass = f" *(Assistência: {ass})*" if ass != "Sem assistência" else " *(Sem assistência)*"
+                        st.markdown(f"- ⚽ **Golo {idx_g+1}:** {aut}{txt_ass}")
+            else:
+                st.info("Ficha de jogo ainda não preenchida para esta jornada.")
+
+    # --- COLUNA DA DIREITA: APENAS SELEÇÃO DE JOGO & FORMULÁRIO ADMIN ---
     with col_ficha:
         st.subheader("📝 Ficha de Jogo (Resultados Reais)")
 
         if not jogos_lousanense:
             st.info("Nenhum jogo do CD Lousanense encontrado na Série A.")
         else:
-            opcoes_j_lous = {
-                f"Jornada {j_num}: {c_nome} vs {f_nome}": (j_num, c_nome, f_nome, e_casa)
-                for j_num, c_nome, f_nome, e_casa in jogos_lousanense
-            }
-
-            # Caixa de seleção expandida para largura total
-            sel_jogo_label = st.selectbox("Selecionar Jogo", list(opcoes_j_lous.keys()))
+            sel_jogo_label = st.selectbox("Selecionar Jogo", list(opcoes_j_lous.keys()), key="sel_jogo_key")
 
             j_num_sel, c_nome_sel, f_nome_sel, e_casa_sel = opcoes_j_lous[sel_jogo_label]
             j_str_key = str(j_num_sel)
 
             ficha_atual = campeonato.fichas_lousanense.get(j_str_key, {})
 
-            # PAINEL DO ADMINISTRADOR
             if e_admin:
                 st.markdown("##### 🛠️ Lançar / Alterar Ficha de Jogo")
                 
@@ -585,43 +634,5 @@ with tab_lousanense:
                     gestor_dados.guardar_dados(campeonato)
                     st.success("Ficha de jogo guardada e estatísticas atualizadas!")
                     st.rerun()
-
-            # VISUALIZAÇÃO PARA VISITANTES
-            if ficha_atual:
-                st.markdown("---")
-                st.markdown(
-                    f"""
-                    <div style="
-                        background-color: #1e293b;
-                        color: #ffffff;
-                        padding: 12px 16px;
-                        border-radius: 8px;
-                        border-left: 5px solid #00d47e;
-                        margin-bottom: 12px;
-                        font-size: 16px;
-                        font-weight: 600;
-                    ">
-                        🔴⚪ Resultado Real (Jornada {j_num_sel}):<br>
-                        <span style="color: #00d47e; font-size: 20px;">
-                            {c_nome_sel} {ficha_atual['golos_marcados'] if e_casa_sel else ficha_atual['golos_sofridos']} - {ficha_atual['golos_sofridos'] if e_casa_sel else ficha_atual['golos_marcados']} {f_nome_sel}
-                        </span>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                conv_gravados = ficha_atual.get("convocados", [])
-                if conv_gravados:
-                    st.write(f"**👕 Jogadores Utilizados ({len(conv_gravados)}):**")
-                    st.text(", ".join(conv_gravados))
-
-                detalhes_gravados = ficha_atual.get("detalhes", [])
-                if detalhes_gravados:
-                    st.write("**Resumo dos Golos do CD Lousanense:**")
-                    for idx_g, g_info in enumerate(detalhes_gravados):
-                        aut = g_info.get("autor")
-                        ass = g_info.get("assistencia")
-                        txt_ass = f" *(Assistência: {ass})*" if ass != "Sem assistência" else " *(Sem assistência)*"
-                        st.markdown(f"- ⚽ **Golo {idx_g+1}:** {aut}{txt_ass}")
             else:
-                st.info("Ficha de jogo ainda não preenchida para esta jornada.")
+                st.info("Utiliza a caixa acima para selecionar a jornada. O resumo do jogo é apresentado logo abaixo da Tabela de Jogadores.")
