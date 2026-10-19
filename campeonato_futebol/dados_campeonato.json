@@ -708,9 +708,9 @@
                     "jornada": 2,
                     "equipa_casa": 6,
                     "equipa_fora": 1,
-                    "golo_casa": 0,
+                    "golo_casa": 1,
                     "golo_fora": 0,
-                    "realizado": false
+                    "realizado": true
                 },
                 {
                     "jornada": 3,
