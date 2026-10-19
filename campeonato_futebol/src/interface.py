@@ -175,24 +175,29 @@ if not hasattr(campeonato, "jogadores_extra_lousanense"):
 
 st.title("⚽ Troféu Distrital Coimbra - Sub11")
 
-# Sidebar - Painel de Acesso Admin com opção de Logout
+# Sidebar - Painel de Acesso Admin com controlo de estado seguro
 st.sidebar.header("⚙️ Definições & Acesso")
 
 pass_correta = st.secrets.get("ADMIN_PASSWORD", "admin123")
 
-if "senha_input" not in st.session_state:
-    st.session_state["senha_input"] = ""
+if "e_admin" not in st.session_state:
+    st.session_state["e_admin"] = False
 
-senha_admin = st.sidebar.text_input("Palavra-passe Admin", type="password", key="senha_input")
-e_admin = (senha_admin == pass_correta)
-
-if e_admin:
+if not st.session_state["e_admin"]:
+    senha_admin = st.sidebar.text_input("Palavra-passe Admin", type="password", key="input_pass")
+    if senha_admin == pass_correta:
+        st.session_state["e_admin"] = True
+        st.rerun()
+    elif senha_admin:
+        st.sidebar.error("Palavra-passe incorreta.")
+    st.sidebar.info("Modo Visitante (Consulta de resultados)")
+else:
     st.sidebar.success("Modo Admin Ativo")
     if st.sidebar.button("🔒 Sair do Modo Admin"):
-        st.session_state["senha_input"] = ""
+        st.session_state["e_admin"] = False
         st.rerun()
-else:
-    st.sidebar.info("Modo Visitante (Consulta de resultados)")
+
+e_admin = st.session_state["e_admin"]
 
 # Separadores Principais
 tab_fase1, tab_fase2, tab_lousanense = st.tabs(["Primeira Fase", "Segunda Fase", "CD Lousanense"])
@@ -438,7 +443,6 @@ with tab_lousanense:
                 nome_f = eq_fora.nome if eq_fora else f"Equipa {j.equipa_fora}"
                 jogos_lousanense.append((j.jornada, nome_c, nome_f, j.equipa_casa == 1))
 
-    # Obter seleção de jogo primeiro para podermos desenhar a ficha/resumo abaixo da tabela
     opcoes_j_lous = {
         f"Jornada {j_num}: {c_nome} vs {f_nome}": (j_num, c_nome, f_nome, e_casa)
         for j_num, c_nome, f_nome, e_casa in jogos_lousanense
@@ -554,7 +558,7 @@ with tab_lousanense:
             else:
                 st.info("Ficha de jogo ainda não preenchida para esta jornada.")
 
-    # --- COLUNA DA DIREITA: APENAS SELEÇÃO DE JOGO & FORMULÁRIO ADMIN ---
+    # --- COLUNA DA DIREITA: SELEÇÃO DE JOGO & FORMULÁRIO ADMIN ---
     with col_ficha:
         st.subheader("📝 Ficha de Jogo (Resultados Reais)")
 
