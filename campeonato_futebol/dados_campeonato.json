@@ -170,8 +170,8 @@
                     "equipa_casa": 9,
                     "equipa_fora": 12,
                     "golo_casa": 0,
-                    "golo_fora": 0,
-                    "realizado": false
+                    "golo_fora": 1,
+                    "realizado": true
                 },
                 {
                     "jornada": 3,
