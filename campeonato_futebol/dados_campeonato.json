@@ -749,8 +749,8 @@
                     "equipa_casa": 4,
                     "equipa_fora": 10,
                     "golo_casa": 0,
-                    "golo_fora": 0,
-                    "realizado": false
+                    "golo_fora": 1,
+                    "realizado": true
                 },
                 {
                     "jornada": 4,
