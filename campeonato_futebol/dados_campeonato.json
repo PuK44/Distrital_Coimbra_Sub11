@@ -2326,6 +2326,36 @@
                     "assistencia": "Tomás Vaz"
                 }
             ]
+        },
+        "5": {
+            "jornada": 5,
+            "golos_marcados": 2,
+            "golos_sofridos": 1,
+            "convocados": [
+                "Vitória Madeira",
+                "Vasco Santos",
+                "David Matos",
+                "João Duarte",
+                "Ricardo Rosa",
+                "Gonçalo Paiva",
+                "Tomás Vaz",
+                "Simão Rodrigues",
+                "Lourenço Santos",
+                "Gonçalo Ferreira",
+                "Gonçalo Barata",
+                "Isaac Fonseca",
+                "Elias Soares"
+            ],
+            "detalhes": [
+                {
+                    "autor": "Gonçalo Ferreira",
+                    "assistencia": "Gonçalo Barata"
+                },
+                {
+                    "autor": "Tomás Vaz",
+                    "assistencia": "Gonçalo Barata"
+                }
+            ]
         }
     },
     "jogadores_extra_lousanense": []
