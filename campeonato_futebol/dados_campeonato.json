@@ -2356,6 +2356,74 @@
                     "assistencia": "Gonçalo Barata"
                 }
             ]
+        },
+        "6": {
+            "jornada": 6,
+            "golos_marcados": 12,
+            "golos_sofridos": 2,
+            "convocados": [
+                "Vitória Madeira",
+                "Vasco Santos",
+                "David Matos",
+                "Ricardo Rosa",
+                "Gonçalo Paiva",
+                "Tomás Vaz",
+                "Simão Rodrigues",
+                "Lourenço Santos",
+                "Gonçalo Ferreira",
+                "Gonçalo Barata",
+                "Isaac Fonseca"
+            ],
+            "detalhes": [
+                {
+                    "autor": "Tomás Vaz",
+                    "assistencia": "Lourenço Santos"
+                },
+                {
+                    "autor": "Isaac Fonseca",
+                    "assistencia": "Simão Rodrigues"
+                },
+                {
+                    "autor": "Simão Rodrigues",
+                    "assistencia": "Isaac Fonseca"
+                },
+                {
+                    "autor": "Isaac Fonseca",
+                    "assistencia": "Simão Rodrigues"
+                },
+                {
+                    "autor": "Tomás Vaz",
+                    "assistencia": "Ricardo Rosa"
+                },
+                {
+                    "autor": "Gonçalo Barata",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Gonçalo Paiva",
+                    "assistencia": "Tomás Vaz"
+                },
+                {
+                    "autor": "Tomás Vaz",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Simão Rodrigues",
+                    "assistencia": "Tomás Vaz"
+                },
+                {
+                    "autor": "Tomás Vaz",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Gonçalo Barata",
+                    "assistencia": "Ricardo Rosa"
+                },
+                {
+                    "autor": "Ricardo Rosa",
+                    "assistencia": "Sem assistência"
+                }
+            ]
         }
     },
     "jogadores_extra_lousanense": []
