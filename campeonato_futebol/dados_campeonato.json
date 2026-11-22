@@ -2424,6 +2424,64 @@
                     "assistencia": "Sem assistência"
                 }
             ]
+        },
+        "7": {
+            "jornada": 7,
+            "golos_marcados": 9,
+            "golos_sofridos": 0,
+            "convocados": [
+                "Vitória Madeira",
+                "Vasco Santos",
+                "David Matos",
+                "João Duarte",
+                "Ricardo Rosa",
+                "Gonçalo Paiva",
+                "Tomás Vaz",
+                "Simão Rodrigues",
+                "Lourenço Santos",
+                "Gonçalo Ferreira",
+                "Gonçalo Barata",
+                "Isaac Fonseca",
+                "Maria Nunes"
+            ],
+            "detalhes": [
+                {
+                    "autor": "Gonçalo Barata",
+                    "assistencia": "Isaac Fonseca"
+                },
+                {
+                    "autor": "Tomás Vaz",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Simão Rodrigues",
+                    "assistencia": "Isaac Fonseca"
+                },
+                {
+                    "autor": "Maria Nunes",
+                    "assistencia": "Tomás Vaz"
+                },
+                {
+                    "autor": "Gonçalo Ferreira",
+                    "assistencia": "Maria Nunes"
+                },
+                {
+                    "autor": "Vitória Madeira",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Vitória Madeira",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Vitória Madeira",
+                    "assistencia": "Sem assistência"
+                },
+                {
+                    "autor": "Vitória Madeira",
+                    "assistencia": "Sem assistência"
+                }
+            ]
         }
     },
     "jogadores_extra_lousanense": []
