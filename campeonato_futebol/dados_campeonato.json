@@ -2423,7 +2423,11 @@
                     "autor": "Ricardo Rosa",
                     "assistencia": "Sem assistência"
                 }
-            ]
+            ],
+            "golos_sofridos_gr": {
+                "Vitória Madeira": 2,
+                "Vasco Santos": 0
+            }
         },
         "7": {
             "jornada": 7,
