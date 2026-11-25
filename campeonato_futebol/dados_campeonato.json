@@ -2355,7 +2355,11 @@
                     "autor": "Tomás Vaz",
                     "assistencia": "Gonçalo Barata"
                 }
-            ]
+            ],
+            "golos_sofridos_gr": {
+                "Vitória Madeira": 0,
+                "Vasco Santos": 1
+            }
         },
         "6": {
             "jornada": 6,
