@@ -8,7 +8,6 @@ import streamlit as st
 import pandas as pd
 from src.modelos import GestorCampeonato, Serie, Jogo
 from src.gestor_dados import GestorDados
-from src.fpf import FIXTURE_IDS, url_jornada, buscar_resultados_fpf, encontrar_id_equipa
 
 # Configuração da página
 st.set_page_config(page_title="Troféu Distrital Coimbra Sub11", layout="wide")
@@ -284,59 +283,8 @@ with tab_fase1:
                                 st.success("Jogo eliminado!")
                                 st.rerun()
 
-    if e_admin and serie_sel in FIXTURE_IDS:
-        with st.expander("🔄 Atualizar resultados a partir da FPF", expanded=False):
-            jornada_fpf = st.selectbox(
-                "Jornada (FPF)",
-                sorted(FIXTURE_IDS[serie_sel].keys()),
-                key=f"jornada_fpf_{serie_sel}",
-            )
-            st.caption(f"Fonte: {url_jornada(serie_sel, jornada_fpf)}")
-
-            if st.button("Atualizar resultados", key=f"btn_fpf_{serie_sel}"):
-                try:
-                    resultados_fpf = buscar_resultados_fpf(serie_sel, jornada_fpf)
-                except Exception as erro:
-                    st.error(f"Não foi possível ler a página da FPF: {erro}")
-                    resultados_fpf = None
-
-                if resultados_fpf is not None:
-                    atualizados, por_atualizar = [], []
-                    for r in resultados_fpf:
-                        descr = f"{r['casa']} {r['golo_casa']} - {r['golo_fora']} {r['fora']}"
-                        id_casa = encontrar_id_equipa(r["casa"], s_obj.equipas)
-                        id_fora = encontrar_id_equipa(r["fora"], s_obj.equipas)
-                        jogo_app = next(
-                            (j for j in s_obj.jogos
-                             if j.jornada == jornada_fpf
-                             and j.equipa_casa == id_casa
-                             and j.equipa_fora == id_fora),
-                            None,
-                        ) if id_casa and id_fora else None
-
-                        if jogo_app is None:
-                            por_atualizar.append(f"{descr}: jogo não encontrado na app")
-                        elif jogo_app.realizado:
-                            por_atualizar.append(
-                                f"{descr}: já tinha resultado "
-                                f"({jogo_app.golo_casa} - {jogo_app.golo_fora}), não alterado"
-                            )
-                        else:
-                            jogo_app.definir_resultado(r["golo_casa"], r["golo_fora"])
-                            atualizados.append(descr)
-
-                    if atualizados:
-                        gestor_dados.guardar_dados(campeonato)
-                        st.success(f"{len(atualizados)} resultado(s) atualizado(s):")
-                        for d in atualizados:
-                            st.write(f"- {d}")
-                    else:
-                        st.info("Nenhum resultado novo para atualizar.")
-                    for d in por_atualizar:
-                        st.caption(d)
-
     col1, col_espaco, col2 = st.columns([1.1, 0.15, 0.95])
-
+    
     with col1:
         st.subheader("🗓️ Jogos & Resultados")
         
