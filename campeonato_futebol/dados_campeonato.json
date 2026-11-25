@@ -2481,7 +2481,11 @@
                     "autor": "Maria Nunes",
                     "assistencia": "Tomás Vaz"
                 }
-            ]
+            ],
+            "golos_sofridos_gr": {
+                "Vitória Madeira": 0,
+                "Vasco Santos": 0
+            }
         }
     },
     "jogadores_extra_lousanense": []
