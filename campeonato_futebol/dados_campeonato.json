@@ -2325,7 +2325,11 @@
                     "autor": "Simão Rodrigues",
                     "assistencia": "Tomás Vaz"
                 }
-            ]
+            ],
+            "golos_sofridos_gr": {
+                "Vitória Madeira": 0,
+                "Vasco Santos": 2
+            }
         },
         "5": {
             "jornada": 5,
