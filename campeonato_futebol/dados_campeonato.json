@@ -1927,7 +1927,9 @@
                     "equipa_fora": 2,
                     "golo_casa": 0,
                     "golo_fora": 0,
-                    "realizado": false
+                    "realizado": false,
+                    "adiado": true,
+                    "data_adiamento": "2026-11-30"
                 },
                 {
                     "jornada": 7,
