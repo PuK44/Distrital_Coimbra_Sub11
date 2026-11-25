@@ -19,7 +19,7 @@ gestor_dados = GestorDados()
 PLANTEL_LOUSANENSE_BASE = [
     {"nome": "Vitória Madeira", "posicao": "GR"},
     {"nome": "Vasco Santos", "posicao": "GR"},
-    {"nome": "Valentim", "posicao": "GR"},
+    {"nome": "Valentim", "posicao": "Defesa"},
     {"nome": "Martim Simões", "posicao": "Defesa"},
     {"nome": "David Matos", "posicao": "Defesa"},
     {"nome": "João Duarte", "posicao": "Defesa"},
@@ -477,12 +477,21 @@ with tab_lousanense:
     with col_stats:
         st.subheader("📊 Tabela de Jogadores")
 
-        stats_jogadores = {p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0} for p in plantel_completo}
+        stats_jogadores = {
+            p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0, "GS": 0, "JogosGS": 0}
+            for p in plantel_completo
+        }
 
         for j_str, ficha in campeonato.fichas_lousanense.items():
             for jog in ficha.get("convocados", []):
                 if jog in stats_jogadores:
                     stats_jogadores[jog]["Jogos"] += 1
+
+            # Golos sofridos por guarda-redes (só conta jogos em que o GS foi preenchido na ficha)
+            for gr_nome, gs_val in ficha.get("golos_sofridos_gr", {}).items():
+                if gr_nome in stats_jogadores and gr_nome in ficha.get("convocados", []):
+                    stats_jogadores[gr_nome]["GS"] += int(gs_val)
+                    stats_jogadores[gr_nome]["JogosGS"] += 1
 
             for golo in ficha.get("detalhes", []):
                 autor = golo.get("autor")
@@ -498,18 +507,31 @@ with tab_lousanense:
             j_cnt = datos["Jogos"]
             g_cnt = datos["Golos"]
             a_cnt = datos["Assistências"]
-            
+
             media_g = round(g_cnt / j_cnt, 2) if j_cnt > 0 else 0.0
             media_a = round(a_cnt / j_cnt, 2) if j_cnt > 0 else 0.0
+
+            # Golos sofridos: só se aplica a GR (restantes = "NA"); GR sem fichas preenchidas = "-"
+            if datos["Posição"] != "GR":
+                gs_txt = "NA"
+                gs_media_txt = "NA"
+            elif datos["JogosGS"] > 0:
+                gs_txt = str(datos["GS"])
+                gs_media_txt = f"{datos['GS'] / datos['JogosGS']:.2f}"
+            else:
+                gs_txt = "-"
+                gs_media_txt = "-"
 
             lista_stats.append({
                 "Jogador": nome_p,
                 "Posição": datos["Posição"],
-                "Jogos": j_cnt,
                 "Golos": g_cnt,
-                "Média Golos": media_g,
                 "Assistências": a_cnt,
-                "Média Assist.": media_a
+                "GS": gs_txt,
+                "Média Golos": media_g,
+                "Média Assist.": media_a,
+                "Média GS": gs_media_txt,
+                "Jogos": j_cnt,
             })
 
         df_jogadores = pd.DataFrame(lista_stats)
@@ -523,11 +545,13 @@ with tab_lousanense:
             column_config={
                 "Jogador": st.column_config.TextColumn("Jogador", width="medium"),
                 "Posição": st.column_config.TextColumn("Pos.", width="small"),
-                "Jogos": st.column_config.NumberColumn("👕 J", width="small"),
                 "Golos": st.column_config.NumberColumn("⚽ G", width="small"),
-                "Média Golos": st.column_config.NumberColumn("⚽/J", format="%.2f", width="small"),
                 "Assistências": st.column_config.NumberColumn("👟 A", width="small"),
+                "GS": st.column_config.TextColumn("🧤 GS", width="small"),
+                "Média Golos": st.column_config.NumberColumn("⚽/J", format="%.2f", width="small"),
                 "Média Assist.": st.column_config.NumberColumn("👟/J", format="%.2f", width="small"),
+                "Média GS": st.column_config.TextColumn("🧤/J", width="small"),
+                "Jogos": st.column_config.NumberColumn("👕 J", width="small"),
             }
         )
 
@@ -625,6 +649,29 @@ with tab_lousanense:
                     key=f"conv_{j_str_key}"
                 )
 
+                # Golos sofridos por cada guarda-redes utilizado neste jogo
+                posicoes_por_nome = {p["nome"]: p["posicao"] for p in plantel_completo}
+                grs_utilizados = [n for n in jogadores_utilizados if posicoes_por_nome.get(n) == "GR"]
+                gs_antigos = ficha_atual.get("golos_sofridos_gr", {})
+                gs_gr_input = {}
+                if grs_utilizados:
+                    st.write("**🧤 Golos Sofridos por Guarda-Redes:**")
+                    cols_gr = st.columns(min(len(grs_utilizados), 3))
+                    for i_gr, nome_gr in enumerate(grs_utilizados):
+                        with cols_gr[i_gr % len(cols_gr)]:
+                            gs_gr_input[nome_gr] = int(st.number_input(
+                                nome_gr,
+                                min_value=0, max_value=20,
+                                value=int(gs_antigos.get(nome_gr, 0)),
+                                key=f"gsgr_{j_str_key}_{nome_gr}"
+                            ))
+                    soma_gs_gr = sum(gs_gr_input.values())
+                    if soma_gs_gr != int(g_sofridos):
+                        st.warning(
+                            f"A soma dos golos sofridos dos GR ({soma_gs_gr}) tem de ser igual aos "
+                            f"Golos Sofridos do jogo ({int(g_sofridos)})."
+                        )
+
                 detalhes_input = []
                 if g_marcados > 0:
                     st.write("**Marcadores e Assistências dos Golos:**")
@@ -651,15 +698,22 @@ with tab_lousanense:
                         detalhes_input.append({"autor": autor_sel, "assistencia": assist_sel})
 
                 if st.button("Guardar Ficha de Jogo", key=f"btn_ficha_{j_str_key}"):
-                    campeonato.fichas_lousanense[j_str_key] = {
-                        "jornada": j_num_sel,
-                        "golos_marcados": int(g_marcados),
-                        "golos_sofridos": int(g_sofridos),
-                        "convocados": jogadores_utilizados,
-                        "detalhes": detalhes_input
-                    }
-                    gestor_dados.guardar_dados(campeonato)
-                    st.success("Ficha de jogo guardada e estatísticas atualizadas!")
-                    st.rerun()
+                    if gs_gr_input and sum(gs_gr_input.values()) != int(g_sofridos):
+                        st.error(
+                            f"Não foi possível guardar: a soma dos golos sofridos dos GR ({sum(gs_gr_input.values())}) "
+                            f"tem de ser igual aos Golos Sofridos do jogo ({int(g_sofridos)})."
+                        )
+                    else:
+                        campeonato.fichas_lousanense[j_str_key] = {
+                            "jornada": j_num_sel,
+                            "golos_marcados": int(g_marcados),
+                            "golos_sofridos": int(g_sofridos),
+                            "convocados": jogadores_utilizados,
+                            "detalhes": detalhes_input,
+                            "golos_sofridos_gr": gs_gr_input
+                        }
+                        gestor_dados.guardar_dados(campeonato)
+                        st.success("Ficha de jogo guardada e estatísticas atualizadas!")
+                        st.rerun()
             else:
                 st.info("Utiliza a caixa acima para selecionar a jornada. O resumo do jogo é apresentado logo abaixo da Tabela de Jogadores.")
