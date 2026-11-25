@@ -159,6 +159,15 @@ def precisa_reinstalar(dados):
             return True
     return False
 
+def jornada_mais_recente(jogos, default=None):
+    """Devolve a última jornada com pelo menos um jogo realizado.
+    Se ainda não houver resultados, devolve a primeira jornada existente (ou `default`)."""
+    realizadas = [j.jornada for j in jogos if j.realizado]
+    if realizadas:
+        return max(realizadas)
+    todas = [j.jornada for j in jogos]
+    return min(todas) if todas else default
+
 # Carregamento seguro na memória de sessão
 if "campeonato" not in st.session_state or precisa_reinstalar(st.session_state.get("campeonato")):
     dados = gestor_dados.carregar_dados()
@@ -283,8 +292,12 @@ with tab_fase1:
         
         if jornadas_existentes:
             col_f1, col_f2 = st.columns([1, 1])
+            # Ao entrar (ou ao mudar de série) abre na jornada mais recente com jogos realizados
+            chave_filtro = f"filtro_jornada_{serie_sel}"
+            if st.session_state.get(chave_filtro) not in jornadas_existentes:
+                st.session_state[chave_filtro] = jornada_mais_recente(s_obj.jogos)
             with col_f1:
-                jornada_filtro = st.selectbox("Filtrar por Jornada", jornadas_existentes)
+                jornada_filtro = st.selectbox("Filtrar por Jornada", jornadas_existentes, key=chave_filtro)
         else:
             jornada_filtro = None
 
@@ -447,6 +460,16 @@ with tab_lousanense:
         f"Jornada {j_num}: {c_nome} vs {f_nome}": (j_num, c_nome, f_nome, e_casa)
         for j_num, c_nome, f_nome, e_casa in jogos_lousanense
     } if jogos_lousanense else {}
+
+    # Ao entrar abre no jogo da jornada mais recente já realizada pelo CD Lousanense
+    if opcoes_j_lous and st.session_state.get("sel_jogo_key") not in opcoes_j_lous:
+        jornada_recente_lous = jornada_mais_recente(
+            [j for j in serie_a.jogos if j.equipa_casa == 1 or j.equipa_fora == 1]
+        )
+        st.session_state["sel_jogo_key"] = next(
+            (label for label, dados_j in opcoes_j_lous.items() if dados_j[0] == jornada_recente_lous),
+            list(opcoes_j_lous.keys())[0],
+        )
 
     col_stats, col_espaco_l, col_ficha = st.columns([1.25, 0.1, 0.95])
 
