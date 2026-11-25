@@ -197,8 +197,19 @@ def jornada_mais_recente(jogos, default=None):
     todas = [j.jornada for j in jogos]
     return min(todas) if todas else default
 
+def campeonato_desatualizado(dados):
+    """True se os objetos guardados na sessão vêm de uma versão anterior das classes
+    (acontece quando o código é atualizado com uma sessão aberta)."""
+    if not isinstance(dados, GestorCampeonato):
+        return True
+    return any(not isinstance(j, Jogo) for s in dados.series.values() for j in s.jogos)
+
 # Carregamento seguro na memória de sessão
-if "campeonato" not in st.session_state or precisa_reinstalar(st.session_state.get("campeonato")):
+if (
+    "campeonato" not in st.session_state
+    or campeonato_desatualizado(st.session_state.get("campeonato"))
+    or precisa_reinstalar(st.session_state.get("campeonato"))
+):
     dados = gestor_dados.carregar_dados()
     if precisa_reinstalar(dados):
         st.session_state["campeonato"] = criar_campeonato_inicial()
