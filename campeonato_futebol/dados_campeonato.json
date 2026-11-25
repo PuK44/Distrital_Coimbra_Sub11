@@ -2298,7 +2298,11 @@
                     "autor": "Simão Rodrigues",
                     "assistencia": "Isaac Fonseca"
                 }
-            ]
+            ],
+            "golos_sofridos_gr": {
+                "Vitória Madeira": 1,
+                "Vasco Santos": 1
+            }
         },
         "4": {
             "jornada": 4,
