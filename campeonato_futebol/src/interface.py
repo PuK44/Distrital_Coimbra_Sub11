@@ -1,5 +1,6 @@
 import sys
 import os
+from datetime import date, datetime, timedelta, timezone
 
 # Adiciona a diretoria raiz ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -19,7 +20,7 @@ gestor_dados = GestorDados()
 PLANTEL_LOUSANENSE_BASE = [
     {"nome": "Vitória Madeira", "posicao": "GR"},
     {"nome": "Vasco Santos", "posicao": "GR"},
-    {"nome": "Valentim", "posicao": "GR"},
+    {"nome": "Valentim", "posicao": "Defesa"},
     {"nome": "Martim Simões", "posicao": "Defesa"},
     {"nome": "David Matos", "posicao": "Defesa"},
     {"nome": "João Duarte", "posicao": "Defesa"},
@@ -159,8 +160,56 @@ def precisa_reinstalar(dados):
             return True
     return False
 
+LIMITE_ADIAMENTO = date(2027, 1, 15)   # data máxima permitida para jogos adiados
+DIAS_ATE_AVISO = 2                     # aviso de resultado em falta X dias após a data do adiamento
+
+def agora_lisboa():
+    """Data/hora atuais no fuso de Lisboa (UTC como alternativa se não houver base de fusos)."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Europe/Lisbon"))
+    except Exception:
+        return datetime.now(timezone.utc)
+
+def nome_equipa(serie, num):
+    eq = serie.equipas.get(num)
+    return eq.nome if eq else f"Equipa {num}"
+
+def fmt_data(d):
+    return d.strftime("%d/%m/%Y") if d else "?"
+
+def avisos_resultado_em_falta(campeonato, hoje):
+    """Jogos adiados, ainda sem resultado, cuja data já passou há pelo menos DIAS_ATE_AVISO dias."""
+    avisos = []
+    for nome_serie, serie in campeonato.series.items():
+        for jogo in serie.jogos:
+            d = jogo.data_adiamento_date()
+            if jogo.adiado and not jogo.realizado and d and hoje >= d + timedelta(days=DIAS_ATE_AVISO):
+                avisos.append((nome_serie, serie, jogo, d))
+    return avisos
+
+def jornada_mais_recente(jogos, default=None):
+    """Devolve a última jornada com pelo menos um jogo realizado.
+    Se ainda não houver resultados, devolve a primeira jornada existente (ou `default`)."""
+    realizadas = [j.jornada for j in jogos if j.realizado]
+    if realizadas:
+        return max(realizadas)
+    todas = [j.jornada for j in jogos]
+    return min(todas) if todas else default
+
+def campeonato_desatualizado(dados):
+    """True se os objetos guardados na sessão vêm de uma versão anterior das classes
+    (acontece quando o código é atualizado com uma sessão aberta)."""
+    if not isinstance(dados, GestorCampeonato):
+        return True
+    return any(not isinstance(j, Jogo) for s in dados.series.values() for j in s.jogos)
+
 # Carregamento seguro na memória de sessão
-if "campeonato" not in st.session_state or precisa_reinstalar(st.session_state.get("campeonato")):
+if (
+    "campeonato" not in st.session_state
+    or campeonato_desatualizado(st.session_state.get("campeonato"))
+    or precisa_reinstalar(st.session_state.get("campeonato"))
+):
     dados = gestor_dados.carregar_dados()
     if precisa_reinstalar(dados):
         st.session_state["campeonato"] = criar_campeonato_inicial()
@@ -198,6 +247,23 @@ else:
         st.rerun()
 
 e_admin = st.session_state["e_admin"]
+
+# Indicador discreto de data/hora (fuso de Lisboa)
+agora = agora_lisboa()
+HOJE = agora.date()
+st.sidebar.divider()
+st.sidebar.caption(f"🕒 {agora:%d/%m/%Y %H:%M} (hora de Lisboa)")
+
+# Avisos de resultado em falta (jogos adiados cuja data passou há 2+ dias)
+avisos_em_falta = avisos_resultado_em_falta(campeonato, HOJE)
+ids_jogos_em_aviso = {id(a[2]) for a in avisos_em_falta}
+if avisos_em_falta:
+    linhas_aviso = "\n".join(
+        f"- **{ns}** · Jornada {jg.jornada}: {nome_equipa(sr, jg.equipa_casa)} vs {nome_equipa(sr, jg.equipa_fora)} "
+        f"(adiado para {fmt_data(dt)})"
+        for ns, sr, jg, dt in avisos_em_falta
+    )
+    st.warning(f"⚠️ **Resultado em falta** — jogos adiados cuja data já passou:\n{linhas_aviso}")
 
 # Separadores Principais
 tab_fase1, tab_fase2, tab_lousanense = st.tabs(["Primeira Fase", "Segunda Fase", "CD Lousanense"])
@@ -274,6 +340,15 @@ with tab_fase1:
                                 st.success("Jogo eliminado!")
                                 st.rerun()
 
+    # Indicador de jogos em falta da série (sem contar com os adiados)
+    jogos_em_falta_serie = s_obj.jogos_em_falta()
+    with st.expander(f"⏳ Jogos em falta nesta série: {len(jogos_em_falta_serie)} (sem contar adiados)", expanded=False):
+        if not jogos_em_falta_serie:
+            st.write("Não há jogos em falta.")
+        for jf in jogos_em_falta_serie:
+            marca = " — não realizado" if jf.nao_realizado else ""
+            st.write(f"- Jornada {jf.jornada}: {nome_equipa(s_obj, jf.equipa_casa)} vs {nome_equipa(s_obj, jf.equipa_fora)}{marca}")
+
     col1, col_espaco, col2 = st.columns([1.1, 0.15, 0.95])
     
     with col1:
@@ -283,8 +358,12 @@ with tab_fase1:
         
         if jornadas_existentes:
             col_f1, col_f2 = st.columns([1, 1])
+            # Ao entrar (ou ao mudar de série) abre na jornada mais recente com jogos realizados
+            chave_filtro = f"filtro_jornada_{serie_sel}"
+            if st.session_state.get(chave_filtro) not in jornadas_existentes:
+                st.session_state[chave_filtro] = jornada_mais_recente(s_obj.jogos)
             with col_f1:
-                jornada_filtro = st.selectbox("Filtrar por Jornada", jornadas_existentes)
+                jornada_filtro = st.selectbox("Filtrar por Jornada", jornadas_existentes, key=chave_filtro)
         else:
             jornada_filtro = None
 
@@ -318,12 +397,20 @@ with tab_fase1:
                     unsafe_allow_html=True
                 )
                 
-                res_texto = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
+                if jogo.adiado:
+                    res_texto = "Adiado"
+                elif jogo.nao_realizado:
+                    res_texto = "Não realizado"
+                elif jogo.realizado:
+                    res_texto = f"{jogo.golo_casa} - {jogo.golo_fora}"
+                else:
+                    res_texto = "Por jogar"
+                data_adiada = jogo.data_adiamento_date()
                 
                 if e_admin:
                     col_r1, col_r2 = st.columns([1, 1])
                     with col_r1:
-                        opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1"]
+                        opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1", "Adiado", "Não realizado"]
                         idx_default = opcoes_res.index(res_texto) if res_texto in opcoes_res else 0
                         
                         novo_res = st.selectbox(
@@ -333,11 +420,28 @@ with tab_fase1:
                             key=f"res_{serie_sel}_{jogo.jornada}_{idx}"
                         )
                         
+                        data_sel = None
+                        if novo_res == "Adiado":
+                            min_d = min(HOJE, data_adiada) if data_adiada else HOJE
+                            max_d = max(LIMITE_ADIAMENTO, min_d)
+                            data_sel = st.date_input(
+                                "Data do jogo adiado",
+                                value=min(data_adiada or HOJE, max_d),
+                                min_value=min_d,
+                                max_value=max_d,
+                                format="DD/MM/YYYY",
+                                key=f"data_{serie_sel}_{jogo.jornada}_{idx}"
+                            )
+                        elif novo_res == "Não realizado":
+                            st.caption("Sem data de realização. Para ser acompanhado, escolher depois \"Adiado\" e uma data.")
+
                         if st.button(f"Guardar Resultado", key=f"btn_{serie_sel}_{jogo.jornada}_{idx}"):
                             if novo_res == "Por jogar":
-                                jogo.realizado = False
-                                jogo.golo_casa = 0
-                                jogo.golo_fora = 0
+                                jogo.repor_por_jogar()
+                            elif novo_res == "Adiado":
+                                jogo.adiar(data_sel.isoformat())
+                            elif novo_res == "Não realizado":
+                                jogo.marcar_nao_realizado()
                             else:
                                 gc, gf = map(int, novo_res.split(" - "))
                                 jogo.definir_resultado(gc, gf)
@@ -347,6 +451,11 @@ with tab_fase1:
                             st.rerun()
                 else:
                     cor_status = "#00d47e" if jogo.realizado else "#94a3b8"
+                    if jogo.adiado:
+                        res_texto = f"Adiado para {fmt_data(data_adiada)}"
+                        cor_status = "#f59e0b"
+                    elif jogo.nao_realizado:
+                        cor_status = "#f59e0b"
                     st.markdown(
                         f"""
                         <div style="margin-top: -2px; margin-bottom: 12px; padding-left: 4px; font-size: 14px;">
@@ -356,6 +465,12 @@ with tab_fase1:
                         """,
                         unsafe_allow_html=True
                     )
+
+                # Estado de adiamento e aviso junto ao jogo
+                if jogo.adiado and e_admin:
+                    st.caption(f"📅 Adiado para {fmt_data(data_adiada)}")
+                if id(jogo) in ids_jogos_em_aviso:
+                    st.warning(f"⚠️ Resultado em falta — jogo adiado para {fmt_data(data_adiada)}.")
                 st.divider()
 
     with col2:
@@ -448,18 +563,37 @@ with tab_lousanense:
         for j_num, c_nome, f_nome, e_casa in jogos_lousanense
     } if jogos_lousanense else {}
 
+    # Ao entrar abre no jogo da jornada mais recente já realizada pelo CD Lousanense
+    if opcoes_j_lous and st.session_state.get("sel_jogo_key") not in opcoes_j_lous:
+        jornada_recente_lous = jornada_mais_recente(
+            [j for j in serie_a.jogos if j.equipa_casa == 1 or j.equipa_fora == 1]
+        )
+        st.session_state["sel_jogo_key"] = next(
+            (label for label, dados_j in opcoes_j_lous.items() if dados_j[0] == jornada_recente_lous),
+            list(opcoes_j_lous.keys())[0],
+        )
+
     col_stats, col_espaco_l, col_ficha = st.columns([1.25, 0.1, 0.95])
 
     # --- COLUNA DA ESQUERDA: TABELA DE JOGADORES + RESUMO DE JOGO DEBAIXO ---
     with col_stats:
         st.subheader("📊 Tabela de Jogadores")
 
-        stats_jogadores = {p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0} for p in plantel_completo}
+        stats_jogadores = {
+            p["nome"]: {"Posição": p["posicao"], "Jogos": 0, "Golos": 0, "Assistências": 0, "GS": 0, "JogosGS": 0}
+            for p in plantel_completo
+        }
 
         for j_str, ficha in campeonato.fichas_lousanense.items():
             for jog in ficha.get("convocados", []):
                 if jog in stats_jogadores:
                     stats_jogadores[jog]["Jogos"] += 1
+
+            # Golos sofridos por guarda-redes (só conta jogos em que o GS foi preenchido na ficha)
+            for gr_nome, gs_val in ficha.get("golos_sofridos_gr", {}).items():
+                if gr_nome in stats_jogadores and gr_nome in ficha.get("convocados", []):
+                    stats_jogadores[gr_nome]["GS"] += int(gs_val)
+                    stats_jogadores[gr_nome]["JogosGS"] += 1
 
             for golo in ficha.get("detalhes", []):
                 autor = golo.get("autor")
@@ -475,18 +609,31 @@ with tab_lousanense:
             j_cnt = datos["Jogos"]
             g_cnt = datos["Golos"]
             a_cnt = datos["Assistências"]
-            
+
             media_g = round(g_cnt / j_cnt, 2) if j_cnt > 0 else 0.0
             media_a = round(a_cnt / j_cnt, 2) if j_cnt > 0 else 0.0
+
+            # Golos sofridos: só se aplica a GR (restantes = "NA"); GR sem fichas preenchidas = "-"
+            if datos["Posição"] != "GR":
+                gs_txt = "NA"
+                gs_media_txt = "NA"
+            elif datos["JogosGS"] > 0:
+                gs_txt = str(datos["GS"])
+                gs_media_txt = f"{datos['GS'] / datos['JogosGS']:.2f}"
+            else:
+                gs_txt = "-"
+                gs_media_txt = "-"
 
             lista_stats.append({
                 "Jogador": nome_p,
                 "Posição": datos["Posição"],
-                "Jogos": j_cnt,
                 "Golos": g_cnt,
-                "Média Golos": media_g,
                 "Assistências": a_cnt,
-                "Média Assist.": media_a
+                "GS": gs_txt,
+                "Média Golos": media_g,
+                "Média Assist.": media_a,
+                "Média GS": gs_media_txt,
+                "Jogos": j_cnt,
             })
 
         df_jogadores = pd.DataFrame(lista_stats)
@@ -500,11 +647,13 @@ with tab_lousanense:
             column_config={
                 "Jogador": st.column_config.TextColumn("Jogador", width="medium"),
                 "Posição": st.column_config.TextColumn("Pos.", width="small"),
-                "Jogos": st.column_config.NumberColumn("👕 J", width="small"),
                 "Golos": st.column_config.NumberColumn("⚽ G", width="small"),
-                "Média Golos": st.column_config.NumberColumn("⚽/J", format="%.2f", width="small"),
                 "Assistências": st.column_config.NumberColumn("👟 A", width="small"),
+                "GS": st.column_config.TextColumn("🧤 GS", width="small"),
+                "Média Golos": st.column_config.NumberColumn("⚽/J", format="%.2f", width="small"),
                 "Média Assist.": st.column_config.NumberColumn("👟/J", format="%.2f", width="small"),
+                "Média GS": st.column_config.TextColumn("🧤/J", width="small"),
+                "Jogos": st.column_config.NumberColumn("👕 J", width="small"),
             }
         )
 
@@ -602,6 +751,29 @@ with tab_lousanense:
                     key=f"conv_{j_str_key}"
                 )
 
+                # Golos sofridos por cada guarda-redes utilizado neste jogo
+                posicoes_por_nome = {p["nome"]: p["posicao"] for p in plantel_completo}
+                grs_utilizados = [n for n in jogadores_utilizados if posicoes_por_nome.get(n) == "GR"]
+                gs_antigos = ficha_atual.get("golos_sofridos_gr", {})
+                gs_gr_input = {}
+                if grs_utilizados:
+                    st.write("**🧤 Golos Sofridos por Guarda-Redes:**")
+                    cols_gr = st.columns(min(len(grs_utilizados), 3))
+                    for i_gr, nome_gr in enumerate(grs_utilizados):
+                        with cols_gr[i_gr % len(cols_gr)]:
+                            gs_gr_input[nome_gr] = int(st.number_input(
+                                nome_gr,
+                                min_value=0, max_value=20,
+                                value=int(gs_antigos.get(nome_gr, 0)),
+                                key=f"gsgr_{j_str_key}_{nome_gr}"
+                            ))
+                    soma_gs_gr = sum(gs_gr_input.values())
+                    if soma_gs_gr != int(g_sofridos):
+                        st.warning(
+                            f"A soma dos golos sofridos dos GR ({soma_gs_gr}) tem de ser igual aos "
+                            f"Golos Sofridos do jogo ({int(g_sofridos)})."
+                        )
+
                 detalhes_input = []
                 if g_marcados > 0:
                     st.write("**Marcadores e Assistências dos Golos:**")
@@ -628,15 +800,22 @@ with tab_lousanense:
                         detalhes_input.append({"autor": autor_sel, "assistencia": assist_sel})
 
                 if st.button("Guardar Ficha de Jogo", key=f"btn_ficha_{j_str_key}"):
-                    campeonato.fichas_lousanense[j_str_key] = {
-                        "jornada": j_num_sel,
-                        "golos_marcados": int(g_marcados),
-                        "golos_sofridos": int(g_sofridos),
-                        "convocados": jogadores_utilizados,
-                        "detalhes": detalhes_input
-                    }
-                    gestor_dados.guardar_dados(campeonato)
-                    st.success("Ficha de jogo guardada e estatísticas atualizadas!")
-                    st.rerun()
+                    if gs_gr_input and sum(gs_gr_input.values()) != int(g_sofridos):
+                        st.error(
+                            f"Não foi possível guardar: a soma dos golos sofridos dos GR ({sum(gs_gr_input.values())}) "
+                            f"tem de ser igual aos Golos Sofridos do jogo ({int(g_sofridos)})."
+                        )
+                    else:
+                        campeonato.fichas_lousanense[j_str_key] = {
+                            "jornada": j_num_sel,
+                            "golos_marcados": int(g_marcados),
+                            "golos_sofridos": int(g_sofridos),
+                            "convocados": jogadores_utilizados,
+                            "detalhes": detalhes_input,
+                            "golos_sofridos_gr": gs_gr_input
+                        }
+                        gestor_dados.guardar_dados(campeonato)
+                        st.success("Ficha de jogo guardada e estatísticas atualizadas!")
+                        st.rerun()
             else:
                 st.info("Utiliza a caixa acima para selecionar a jornada. O resumo do jogo é apresentado logo abaixo da Tabela de Jogadores.")

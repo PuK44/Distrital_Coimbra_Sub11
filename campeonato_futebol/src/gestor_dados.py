@@ -9,12 +9,13 @@ class GestorDados:
         self.ficheiro_local = ficheiro_local
         self.token = st.secrets.get("GITHUB_TOKEN", None)
         self.repo = st.secrets.get("GITHUB_REPO", None)
+        self.branch = st.secrets.get("GITHUB_BRANCH", "main")
         self.caminho_github = "campeonato_futebol/dados_campeonato.json"
 
     def carregar_dados(self) -> GestorCampeonato:
         # Tenta carregar primeiro a partir do GitHub via API se configurado
         if self.token and self.repo:
-            url = f"https://raw.githubusercontent.com/{self.repo}/main/{self.caminho_github}"
+            url = f"https://raw.githubusercontent.com/{self.repo}/{self.branch}/{self.caminho_github}"
             headers = {"Authorization": f"token {self.token}"}
             try:
                 res = requests.get(url, headers=headers)
@@ -53,7 +54,7 @@ class GestorDados:
 
             try:
                 # Obter o SHA do ficheiro atual para poder atualizar
-                get_res = requests.get(url_api, headers=headers)
+                get_res = requests.get(url_api, headers=headers, params={"ref": self.branch})
                 sha = get_res.json().get("sha") if get_res.status_code == 200 else None
 
                 import base64
@@ -62,7 +63,7 @@ class GestorDados:
                 payload = {
                     "message": "Update dados_campeonato.json via Streamlit App",
                     "content": conteudo_b64,
-                    "branch": "main"
+                    "branch": self.branch
                 }
                 if sha:
                     payload["sha"] = sha
