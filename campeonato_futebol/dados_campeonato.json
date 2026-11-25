@@ -1375,7 +1375,8 @@
                     "golo_casa": 0,
                     "golo_fora": 0,
                     "realizado": false,
-                    "nao_realizado": true
+                    "adiado": true,
+                    "data_adiamento": "2026-12-08"
                 },
                 {
                     "jornada": 7,
