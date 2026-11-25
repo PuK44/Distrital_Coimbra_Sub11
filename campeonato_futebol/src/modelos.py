@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 import pandas as pd
 
 class Equipa:
@@ -14,21 +16,60 @@ class Equipa:
 
 
 class Jogo:
-    def __init__(self, jornada: int, equipa_casa: int, equipa_fora: int, golo_casa: int = 0, golo_fora: int = 0, realizado: bool = False):
+    def __init__(self, jornada: int, equipa_casa: int, equipa_fora: int, golo_casa: int = 0, golo_fora: int = 0, realizado: bool = False,
+                 adiado: bool = False, data_adiamento: str = None, nao_realizado: bool = False):
         self.jornada = jornada
         self.equipa_casa = equipa_casa
         self.equipa_fora = equipa_fora
         self.golo_casa = golo_casa
         self.golo_fora = golo_fora
         self.realizado = realizado
+        self.adiado = adiado                    # jogo adiado com data marcada
+        self.data_adiamento = data_adiamento    # data ISO "AAAA-MM-DD" (só quando adiado)
+        self.nao_realizado = nao_realizado      # não se realizou na data prevista, ainda sem nova data
+
+    def limpar_adiamento(self):
+        """Apaga o estado de adiamento / não realizado (jogo resolvido ou reposto)."""
+        self.adiado = False
+        self.data_adiamento = None
+        self.nao_realizado = False
 
     def definir_resultado(self, golo_casa: int, golo_fora: int):
         self.golo_casa = golo_casa
         self.golo_fora = golo_fora
         self.realizado = True
+        self.limpar_adiamento()
+
+    def repor_por_jogar(self):
+        self.realizado = False
+        self.golo_casa = 0
+        self.golo_fora = 0
+        self.limpar_adiamento()
+
+    def adiar(self, data_iso: str):
+        self.realizado = False
+        self.golo_casa = 0
+        self.golo_fora = 0
+        self.adiado = True
+        self.data_adiamento = data_iso
+        self.nao_realizado = False
+
+    def marcar_nao_realizado(self):
+        self.realizado = False
+        self.golo_casa = 0
+        self.golo_fora = 0
+        self.adiado = False
+        self.data_adiamento = None
+        self.nao_realizado = True
+
+    def data_adiamento_date(self):
+        try:
+            return date.fromisoformat(self.data_adiamento) if self.data_adiamento else None
+        except ValueError:
+            return None
 
     def to_dict(self):
-        return {
+        d = {
             "jornada": self.jornada,
             "equipa_casa": self.equipa_casa,
             "equipa_fora": self.equipa_fora,
@@ -36,6 +77,13 @@ class Jogo:
             "golo_fora": self.golo_fora,
             "realizado": self.realizado
         }
+        # Só grava o estado de adiamento enquanto existir (jogo resolvido = apagado)
+        if self.adiado:
+            d["adiado"] = True
+            d["data_adiamento"] = self.data_adiamento
+        if self.nao_realizado:
+            d["nao_realizado"] = True
+        return d
 
     @classmethod
     def from_dict(cls, data):
@@ -45,7 +93,10 @@ class Jogo:
             equipa_fora=data["equipa_fora"],
             golo_casa=data.get("golo_casa", 0),
             golo_fora=data.get("golo_fora", 0),
-            realizado=data.get("realizado", False)
+            realizado=data.get("realizado", False),
+            adiado=data.get("adiado", False),
+            data_adiamento=data.get("data_adiamento"),
+            nao_realizado=data.get("nao_realizado", False)
         )
 
 
@@ -62,6 +113,17 @@ class Serie:
         j = Jogo(jornada, equipa_casa, equipa_fora)
         self.jogos.append(j)
         return j
+
+    def jogos_em_falta(self):
+        """Jogos sem resultado de jornadas já em curso/passadas, sem contar os adiados.
+        Inclui sempre os marcados como não realizados."""
+        realizadas = [j.jornada for j in self.jogos if j.realizado]
+        ref = max(realizadas) if realizadas else 0
+        em_falta = [
+            j for j in self.jogos
+            if not j.realizado and not j.adiado and (j.jornada <= ref or j.nao_realizado)
+        ]
+        return sorted(em_falta, key=lambda j: (j.jornada, j.equipa_casa))
 
     def obter_classificacao(self) -> pd.DataFrame:
         classif = {}

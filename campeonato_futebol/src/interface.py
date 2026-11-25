@@ -1,5 +1,6 @@
 import sys
 import os
+from datetime import date, datetime, timedelta, timezone
 
 # Adiciona a diretoria raiz ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -159,6 +160,34 @@ def precisa_reinstalar(dados):
             return True
     return False
 
+LIMITE_ADIAMENTO = date(2027, 1, 15)   # data máxima permitida para jogos adiados
+DIAS_ATE_AVISO = 2                     # aviso de resultado em falta X dias após a data do adiamento
+
+def agora_lisboa():
+    """Data/hora atuais no fuso de Lisboa (UTC como alternativa se não houver base de fusos)."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Europe/Lisbon"))
+    except Exception:
+        return datetime.now(timezone.utc)
+
+def nome_equipa(serie, num):
+    eq = serie.equipas.get(num)
+    return eq.nome if eq else f"Equipa {num}"
+
+def fmt_data(d):
+    return d.strftime("%d/%m/%Y") if d else "?"
+
+def avisos_resultado_em_falta(campeonato, hoje):
+    """Jogos adiados, ainda sem resultado, cuja data já passou há pelo menos DIAS_ATE_AVISO dias."""
+    avisos = []
+    for nome_serie, serie in campeonato.series.items():
+        for jogo in serie.jogos:
+            d = jogo.data_adiamento_date()
+            if jogo.adiado and not jogo.realizado and d and hoje >= d + timedelta(days=DIAS_ATE_AVISO):
+                avisos.append((nome_serie, serie, jogo, d))
+    return avisos
+
 def jornada_mais_recente(jogos, default=None):
     """Devolve a última jornada com pelo menos um jogo realizado.
     Se ainda não houver resultados, devolve a primeira jornada existente (ou `default`)."""
@@ -207,6 +236,23 @@ else:
         st.rerun()
 
 e_admin = st.session_state["e_admin"]
+
+# Indicador discreto de data/hora (fuso de Lisboa)
+agora = agora_lisboa()
+HOJE = agora.date()
+st.sidebar.divider()
+st.sidebar.caption(f"🕒 {agora:%d/%m/%Y %H:%M} (hora de Lisboa)")
+
+# Avisos de resultado em falta (jogos adiados cuja data passou há 2+ dias)
+avisos_em_falta = avisos_resultado_em_falta(campeonato, HOJE)
+ids_jogos_em_aviso = {id(a[2]) for a in avisos_em_falta}
+if avisos_em_falta:
+    linhas_aviso = "\n".join(
+        f"- **{ns}** · Jornada {jg.jornada}: {nome_equipa(sr, jg.equipa_casa)} vs {nome_equipa(sr, jg.equipa_fora)} "
+        f"(adiado para {fmt_data(dt)})"
+        for ns, sr, jg, dt in avisos_em_falta
+    )
+    st.warning(f"⚠️ **Resultado em falta** — jogos adiados cuja data já passou:\n{linhas_aviso}")
 
 # Separadores Principais
 tab_fase1, tab_fase2, tab_lousanense = st.tabs(["Primeira Fase", "Segunda Fase", "CD Lousanense"])
@@ -283,6 +329,15 @@ with tab_fase1:
                                 st.success("Jogo eliminado!")
                                 st.rerun()
 
+    # Indicador de jogos em falta da série (sem contar com os adiados)
+    jogos_em_falta_serie = s_obj.jogos_em_falta()
+    with st.expander(f"⏳ Jogos em falta nesta série: {len(jogos_em_falta_serie)} (sem contar adiados)", expanded=False):
+        if not jogos_em_falta_serie:
+            st.write("Não há jogos em falta.")
+        for jf in jogos_em_falta_serie:
+            marca = " — não realizado" if jf.nao_realizado else ""
+            st.write(f"- Jornada {jf.jornada}: {nome_equipa(s_obj, jf.equipa_casa)} vs {nome_equipa(s_obj, jf.equipa_fora)}{marca}")
+
     col1, col_espaco, col2 = st.columns([1.1, 0.15, 0.95])
     
     with col1:
@@ -331,12 +386,20 @@ with tab_fase1:
                     unsafe_allow_html=True
                 )
                 
-                res_texto = f"{jogo.golo_casa} - {jogo.golo_fora}" if jogo.realizado else "Por jogar"
+                if jogo.adiado:
+                    res_texto = "Adiado"
+                elif jogo.nao_realizado:
+                    res_texto = "Não realizado"
+                elif jogo.realizado:
+                    res_texto = f"{jogo.golo_casa} - {jogo.golo_fora}"
+                else:
+                    res_texto = "Por jogar"
+                data_adiada = jogo.data_adiamento_date()
                 
                 if e_admin:
                     col_r1, col_r2 = st.columns([1, 1])
                     with col_r1:
-                        opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1"]
+                        opcoes_res = ["Por jogar", "1 - 0", "0 - 0", "0 - 1", "Adiado", "Não realizado"]
                         idx_default = opcoes_res.index(res_texto) if res_texto in opcoes_res else 0
                         
                         novo_res = st.selectbox(
@@ -346,11 +409,28 @@ with tab_fase1:
                             key=f"res_{serie_sel}_{jogo.jornada}_{idx}"
                         )
                         
+                        data_sel = None
+                        if novo_res == "Adiado":
+                            min_d = min(HOJE, data_adiada) if data_adiada else HOJE
+                            max_d = max(LIMITE_ADIAMENTO, min_d)
+                            data_sel = st.date_input(
+                                "Data do jogo adiado",
+                                value=min(data_adiada or HOJE, max_d),
+                                min_value=min_d,
+                                max_value=max_d,
+                                format="DD/MM/YYYY",
+                                key=f"data_{serie_sel}_{jogo.jornada}_{idx}"
+                            )
+                        elif novo_res == "Não realizado":
+                            st.caption("Sem data de realização. Para ser acompanhado, escolher depois \"Adiado\" e uma data.")
+
                         if st.button(f"Guardar Resultado", key=f"btn_{serie_sel}_{jogo.jornada}_{idx}"):
                             if novo_res == "Por jogar":
-                                jogo.realizado = False
-                                jogo.golo_casa = 0
-                                jogo.golo_fora = 0
+                                jogo.repor_por_jogar()
+                            elif novo_res == "Adiado":
+                                jogo.adiar(data_sel.isoformat())
+                            elif novo_res == "Não realizado":
+                                jogo.marcar_nao_realizado()
                             else:
                                 gc, gf = map(int, novo_res.split(" - "))
                                 jogo.definir_resultado(gc, gf)
@@ -360,6 +440,11 @@ with tab_fase1:
                             st.rerun()
                 else:
                     cor_status = "#00d47e" if jogo.realizado else "#94a3b8"
+                    if jogo.adiado:
+                        res_texto = f"Adiado para {fmt_data(data_adiada)}"
+                        cor_status = "#f59e0b"
+                    elif jogo.nao_realizado:
+                        cor_status = "#f59e0b"
                     st.markdown(
                         f"""
                         <div style="margin-top: -2px; margin-bottom: 12px; padding-left: 4px; font-size: 14px;">
@@ -369,6 +454,12 @@ with tab_fase1:
                         """,
                         unsafe_allow_html=True
                     )
+
+                # Estado de adiamento e aviso junto ao jogo
+                if jogo.adiado and e_admin:
+                    st.caption(f"📅 Adiado para {fmt_data(data_adiada)}")
+                if id(jogo) in ids_jogos_em_aviso:
+                    st.warning(f"⚠️ Resultado em falta — jogo adiado para {fmt_data(data_adiada)}.")
                 st.divider()
 
     with col2:
