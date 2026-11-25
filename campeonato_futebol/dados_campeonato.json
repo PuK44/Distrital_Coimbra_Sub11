@@ -2185,7 +2185,11 @@
                     "autor": "Gonçalo Ferreira",
                     "assistencia": "Isaac Fonseca"
                 }
-            ]
+            ],
+            "golos_sofridos_gr": {
+                "Vitória Madeira": 2,
+                "Vasco Santos": 1
+            }
         },
         "2": {
             "jornada": 2,
